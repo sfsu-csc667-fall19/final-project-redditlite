@@ -4,7 +4,7 @@
 const INITIAL_STATE = {
   email: '',
   username: '',
-  isLoggedIn: true
+  isLoggedIn: false
 };
 
 // Step 2 create listener function
