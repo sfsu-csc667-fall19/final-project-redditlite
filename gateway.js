@@ -19,12 +19,6 @@ app.all("/api/auth/*", (req, res) => {
   });
 });
 
-app.all("/api/notes/*", (req, res) => {
-  // notes server
-  apiProxy.web(req, res, {
-    target: 'http://localhost:5000',
-  });
-});
 
 app.all("*", (req, res) => {
   // front end server / react

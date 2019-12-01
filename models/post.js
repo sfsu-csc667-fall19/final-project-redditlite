@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
-var noteSchema = new mongoose.Schema({
-    content: {
+var postSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    text: {
         type: String,
         required: true
     },
@@ -9,11 +13,16 @@ var noteSchema = new mongoose.Schema({
         ref: 'user',
         required: true
     },
-    _createdAt:{
+    views: {
+        type: Number,
+        default: 0,
+        required: true
+    },
+    _createdAt: {
         type: Date,
         default: Date.now(),
         required: true
     }
 });
 
-module.exports = mongoose.model('note', noteSchema);
+module.exports = mongoose.model('post', postSchema);
