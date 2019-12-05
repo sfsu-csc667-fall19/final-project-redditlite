@@ -91,8 +91,8 @@ module.exports.updatePost = (postObj) => {
                 if (error) {
                     reject(error);
                 } else {
-                    note = Object.assign(post, postObj);
-                    note.save((error, newObj) => {
+                    post = Object.assign(post, postObj);
+                    post.save((error, newObj) => {
                         if (error) 
                             reject(error);
                         else
