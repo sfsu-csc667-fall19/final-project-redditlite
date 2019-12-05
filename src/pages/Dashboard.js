@@ -51,9 +51,9 @@ const Dashboard = ({
 
 
   
-  if (!isLoggedIn) {
-    return <Redirect to="/" />
-  }
+  // if (!isLoggedIn) {
+  //   return <Redirect to="/" />
+  // }
 
   return (
     <div>
@@ -140,15 +140,15 @@ const Dashboard = ({
                         className="text-left"
                         >
                           <Card.Title >
-                            <h5>Title of the post</h5>
+                            <h5>{note.title}</h5>
                           </Card.Title>
                           <Card.Text>
-                            <p>submitted n hours ago by {note.author.username} to Category</p>
+                            <p>submitted {note.timestamp} hours ago by {note.author.username}</p>
                           </Card.Text>
                           <footer 
                           className="blockquote-footer"
                           >
-                            30.8k comments
+                            {note.comments} comments
                           </footer>
                         </Card.Body>
                       </Card>
