@@ -13,8 +13,13 @@ import {
     Button
 } from "reactstrap";
 import {connect} from 'react-redux'
+import { logoutUser } from "../redux/actions/userActions";
 
 const NaviBar = ({dispatch,username}) => {
+
+    const accountLogOut = ()=>{
+        dispatch(logoutUser)
+    }
 
     return (
         <div>
@@ -23,7 +28,7 @@ const NaviBar = ({dispatch,username}) => {
                 {/* <Collapse navbar> */}
                 <Nav className="" nav>
                     <NavItem>
-                        <NavLink href="/createPost"><Button><i className="fa fa-pencil"> </i> Write Post</Button></NavLink>
+                        <NavLink href="/createPost"><Button onClick={accountLogOut}><i className="fa fa-pencil"> </i> Write Post</Button></NavLink>
                     </NavItem>
 
                     <UncontrolledDropdown nav inNavbar>

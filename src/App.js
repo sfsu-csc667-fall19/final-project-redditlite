@@ -11,6 +11,7 @@ import Signup from './pages/Signup'
 import PostPage from './pages/PostPage'
 
 import { loginUser } from './redux/actions/userActions'
+import NaviBar from './pages/NaviBar';
 
 const App = ({ dispatch, isLoggedIn }) => {
 
@@ -37,27 +38,16 @@ const App = ({ dispatch, isLoggedIn }) => {
 
   return (
     <div className="App">
-      {
+      {/* {
         isLoggedIn && (
           <Redirect to="/dashboard" />
         )
-      }
+      } */}
       <div className="nav-bar">
-        <div>
-          <Link to="/">Home</Link>
-        </div>
-        {
-          !isLoggedIn && (
-            <div>
-              <Link to="/login">Log In</Link>
-              <Link to="/signup">Sign Up</Link>
-            </div>
-          )
-        }
         {
           isLoggedIn && (
             <div>
-              <Link to="/dashboard">Dashboard</Link>
+              <NaviBar />
             </div>
           )
         }
@@ -66,8 +56,8 @@ const App = ({ dispatch, isLoggedIn }) => {
         <Route path="/test/post/page" component={ PostPage } />
         <Route path="/signup" component={ Signup } />
         <Route path="/dashboard" component={ Dashboard } />
-        <Route path="/login" component={ Login } />
-        <Route path="/" component={ Home } />
+        {/* <Route path="/login" component={ Login } /> */}
+        <Route path="/" component={ Login } />
       </Switch>
 
       {/* <div className="App-header">
