@@ -21,7 +21,7 @@ app.use(bodyParser.json())
 app.use(cookieParser());
 
 var authRoutes = {
-  '/api/auth/verify': ['POST'],
+  '/api/auth/verify': ['GET'],
   '/api/auth/user/logout': ['POST']
 }
 
@@ -40,11 +40,10 @@ app.use(async (req, res, next) => {
       // if session id was received, fetch that session from redis.
       if (sessionId) {
         let userId = await getRedisSessionData(redisClient, sessionId);
-        deleteSessionData(redisClient, sessionId);
         // check redisData is null or empty object {}
         if (userId) { 
           const user = await userService.getUserById(userId.toString());
-          req.session = new RedisSession(userId.toString());
+          req.session = new RedisSession(userId.toString(), sessionId);
           req.session.setData(user);
           req.sessionId = req.session.getId();
         } else {
@@ -81,7 +80,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.post('/api/auth/verify', (req, res) => {
+app.get('/api/auth/verify', (req, res) => {
   res.data = { 'sessionId': req.sessionId, 'user': req.session.getData() };
   handleResponse(req, res);
 })
@@ -243,9 +242,9 @@ const handleResponse = (req, res) => {
     try {
      
       req.session.save(redisClient);
-      res.cookie('auth', JSON.stringify({ 'sessionId': req.sessionId, 'user': req.session.getData() }, {
-        maxAge: 60 * 60 * 2
-      }))
+      res.cookie('auth', JSON.stringify({ 'sessionId': req.sessionId, 'user': req.session.getData() }), {
+        maxAge: 60 * 60 * 60
+      })
       
     } catch (e) {
       console.log('Error:', e);
