@@ -1,12 +1,16 @@
-import React from 'react'
+import React from 'react';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Container, Row, Col, DropdownButton, DropdownItem, Card, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logoutUser } from '../redux/actions/userActions'
+import { logoutUser } from '../redux/actions/userActions';
 
 import {
   setnewNote, createNewNote, editNote, countView
 } from '../redux/actions/notesActions'
+
 
 const Dashboard = ({
   dispatch, email, username, notes, isLoggedIn, newNote
@@ -44,6 +48,8 @@ const Dashboard = ({
   const countViewComp = entry => {
     dispatch(countView(entry._id))
   }
+
+
   
   if (!isLoggedIn) {
     return <Redirect to="/" />
@@ -51,7 +57,7 @@ const Dashboard = ({
 
   return (
     <div>
-      <div>
+      {/* <div>
         <h2>Dashboard</h2>
         <div>Welcome { username || email }</div>
         <button className="button" onClick={ () => accountLogOut() }>
@@ -88,23 +94,71 @@ const Dashboard = ({
           </button>
           <hr />
         </div>
+      </div> */}
 
-        {
-          notes.map((note, ind) => (
-            <div
-              className="Note-card" key={ ind }
-              onClick={ () => editNoteComp(notes[ind]) }
-              onMouseLeave={ () => countViewComp(notes[ind]) }
-            >
-              <p>{ note.content }</p>
-              <dir className="Note-signature">
-                By { note.author.username }
-              </dir>
-            </div>
-          ))
-        }
+
+      <div>
+        <Container>
+          <Row>
+            <Col sm={12}>
+              <DropdownButton className="float-right" size="sm" title="Sort by" variant="secondary">
+                <DropdownItem>Most Recent</DropdownItem>
+                <DropdownItem>Top</DropdownItem>
+                <DropdownItem>Controversial</DropdownItem>
+              </DropdownButton>
+            </Col>
+          </Row>      
+          <hr />
+          <Row >
+              <Col>
+                <Card>
+                  <Card.Body className="text-left">
+                    <Card.Title >
+                      <h5>Title of the post</h5>
+                    </Card.Title>
+                    <Card.Text>
+                      <p>submitted n hours ago by Username to Category</p>
+                    </Card.Text>
+                    <footer className="blockquote-footer">
+                      30.8k comments
+                    </footer>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            {
+              notes.map((note, ind) => (
+                <div
+                  className="Note-card" key={ ind }
+                  onClick={ () => editNoteComp(notes[ind]) }
+                  onMouseLeave={ () => countViewComp(notes[ind]) }
+                >
+                  <Row >
+                    <Col>
+                      <Card>
+                        <Card.Body 
+                        className="text-left"
+                        >
+                          <Card.Title >
+                            <h5>Title of the post</h5>
+                          </Card.Title>
+                          <Card.Text>
+                            <p>submitted n hours ago by {note.author.username} to Category</p>
+                          </Card.Text>
+                          <footer 
+                          className="blockquote-footer"
+                          >
+                            30.8k comments
+                          </footer>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+                </div>
+              ))
+            }
+        </Container>
       </div>
-
     </div>
   );
 };
