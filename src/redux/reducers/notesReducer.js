@@ -1,5 +1,34 @@
 const DEFAULT_STATE = {
-  notes: [],
+  // notes: [], // default
+  notes: [
+    {
+      title: 'first one',
+      description: 'like father like son',
+      timestamp: '15 mins',
+      author: {
+        username: 'monbo'
+      },
+      comments: '60k'
+    },
+    {
+      title: 'second one',
+      description: 'sword is mighter than a knife?',
+      timestamp: '10 mins',
+      author: {
+        username: 'jumbo'
+      },
+      comments: '10k'
+    },
+    {
+      title: 'third one',
+      description: 'something something dark side',
+      timestamp: '5 mins',
+      author: {
+        username: 'trash'
+      },
+      comments: '30k'
+    },
+  ], // default
   newNote: '',
 };
 
