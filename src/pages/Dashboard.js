@@ -1,57 +1,78 @@
-import React from 'react';
+import React from "react";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Container, Row, Col, DropdownButton, DropdownItem, Card, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { logoutUser } from '../redux/actions/userActions';
+import {
+  Container,
+  Row,
+  Col,
+  DropdownButton,
+  DropdownItem,
+  Card,
+  Button
+} from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { logoutUser } from "../redux/actions/userActions";
 // import NaviBar from './NaviBar'
 
 import {
-  setnewNote, createNewNote, editNote, countView
-} from '../redux/actions/notesActions'
-
+  setnewNote,
+  createNewNote,
+  editNote,
+  countView
+} from "../redux/actions/notesActions";
 
 const Dashboard = ({
-  dispatch, email, username, notes, isLoggedIn, newNote
+  dispatch,
+  email,
+  username,
+  notes,
+  isLoggedIn,
+  newNote
 }) => {
   const accountLogOut = () => {
-    dispatch(logoutUser())
-  }
+    dispatch(logoutUser());
+  };
 
   const editNoteComp = entry => {
-    let promptVal = window.prompt('How would you like to change the note?', '')
+    let promptVal = window.prompt("How would you like to change the note?", "");
 
     if (promptVal === null) {
       // console.log('NO')
-    } else if (promptVal === '') {
-      let comfirmVal = window.confirm('Would you really like to delete the post content?')
+    } else if (promptVal === "") {
+      let comfirmVal = window.confirm(
+        "Would you really like to delete the post content?"
+      );
 
       if (comfirmVal) {
-        dispatch(editNote({
-          note: {
-            _id: entry._id,
-            content: 'deleted...'
-          }
-        }))
+        dispatch(
+          editNote({
+            note: {
+              _id: entry._id,
+              content: "deleted..."
+            }
+          })
+        );
       }
     } else {
-      dispatch(editNote({
-        note: {
-          _id: entry._id,
-          content: promptVal
-        }
-      }))
+      dispatch(
+        editNote({
+          note: {
+            _id: entry._id,
+            content: promptVal
+          }
+        })
+      );
     }
-  }
+  };
 
   const countViewComp = entry => {
-    dispatch(countView(entry._id))
-  }
+    dispatch(countView(entry._id));
+  };
 
   if (!isLoggedIn) {
-    return <Redirect to="/" />
+    return <Redirect to="/" />;
   }
 
   return (
@@ -96,67 +117,67 @@ const Dashboard = ({
         </div>
       </div> */}
 
-
       <div>
         <Container>
           <Row>
             <Col sm={12}>
-              <DropdownButton className="float-right" size="sm" title="Sort by" variant="secondary">
+              <DropdownButton
+                className="float-right"
+                size="sm"
+                title="Sort by"
+                variant="secondary"
+              >
                 <DropdownItem>Most Recent</DropdownItem>
                 <DropdownItem>Top</DropdownItem>
                 <DropdownItem>Controversial</DropdownItem>
               </DropdownButton>
             </Col>
-          </Row>      
+          </Row>
           <hr />
-          <Row >
-              <Col>
-                <Card>
-                  <Card.Body className="text-left">
-                    <Card.Title >
-                      <h5>Title of the post</h5>
-                    </Card.Title>
-                    <Card.Text>
-                      <p>submitted n hours ago by Username to Category</p>
-                    </Card.Text>
-                    <footer className="blockquote-footer">
-                      30.8k comments
-                    </footer>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            {
-              notes.map((note, ind) => (
-                <div
-                  className="Note-card" key={ ind }
-                  onClick={ () => editNoteComp(notes[ind]) }
-                  onMouseLeave={ () => countViewComp(notes[ind]) }
-                >
-                  <Row >
-                    <Col>
-                      <Card>
-                        <Card.Body 
-                        className="text-left"
-                        >
-                          <Card.Title >
-                            <h5>{note.title}</h5>
-                          </Card.Title>
-                          <Card.Text>
-                            <p>submitted {note.timestamp} hours ago by {note.author.username}</p>
-                          </Card.Text>
-                          <footer 
-                          className="blockquote-footer"
-                          >
-                            {note.comments} comments
-                          </footer>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row>
-                </div>
-              ))
-            }
+          <Row>
+            <Col>
+              <Card>
+                <Card.Body className="text-left">
+                  <Card.Title>
+                    <h5>Title of the post</h5>
+                  </Card.Title>
+                  <Card.Text>
+                    <p>submitted n hours ago by Username to Category</p>
+                  </Card.Text>
+                  <footer className="blockquote-footer">30.8k comments</footer>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          {notes.map((note, ind) => (
+            <div
+              className="Note-card"
+              key={ind}
+              onClick={() => editNoteComp(notes[ind])}
+              onMouseLeave={() => countViewComp(notes[ind])}
+            >
+                <Row>
+                  <Col>
+                    <Card>
+                      <Card.Body className="text-left">
+                        <Card.Title>
+                          <h5>{note.title}</h5>
+                        </Card.Title>
+                        <Card.Text>
+                          <p>
+                            submitted {note.timestamp} hours ago by{" "}
+                            {note.author.username}
+                          </p>
+                        </Card.Text>
+                        <footer className="blockquote-footer">
+                          {note.comments} comments
+                        </footer>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+            </div>
+          ))}
         </Container>
       </div>
     </div>
@@ -169,6 +190,6 @@ const mapStateToProps = state => ({
   notes: state.notesReducer.notes,
   newNote: state.notesReducer.newNote,
   isLoggedIn: state.userReducer.isLoggedIn
-})
+});
 
 export default connect(mapStateToProps)(Dashboard);
