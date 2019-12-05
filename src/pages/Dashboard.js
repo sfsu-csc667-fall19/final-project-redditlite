@@ -6,6 +6,7 @@ import { Container, Row, Col, DropdownButton, DropdownItem, Card, Button } from 
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../redux/actions/userActions';
+// import NaviBar from './NaviBar'
 
 import {
   setnewNote, createNewNote, editNote, countView
@@ -49,14 +50,13 @@ const Dashboard = ({
     dispatch(countView(entry._id))
   }
 
-
-  
   if (!isLoggedIn) {
     return <Redirect to="/" />
   }
 
   return (
     <div>
+      {/* <NaviBar /> */}
       {/* <div>
         <h2>Dashboard</h2>
         <div>Welcome { username || email }</div>
