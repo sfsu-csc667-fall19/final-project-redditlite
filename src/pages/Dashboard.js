@@ -134,7 +134,7 @@ const Dashboard = ({
                   <Row >
                     <Col>
                       <Card
-                        onClick={ () => console.log(note.title) }
+                        onClick={ () => <Redirect to="/test/post/page" /> }
                       >
                         <Card.Body className="text-left" >
                           <Card.Title >
