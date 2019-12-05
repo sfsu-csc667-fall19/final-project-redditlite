@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Signup from './pages/Signup'
+import PostPage from './pages/PostPage'
 
 import { loginUser } from './redux/actions/userActions'
 
@@ -62,6 +63,7 @@ const App = ({ dispatch, isLoggedIn }) => {
         }
       </div>
       <Switch>
+        <Route path="/test/post/page" component={ PostPage } />
         <Route path="/signup" component={ Signup } />
         <Route path="/dashboard" component={ Dashboard } />
         <Route path="/login" component={ Login } />

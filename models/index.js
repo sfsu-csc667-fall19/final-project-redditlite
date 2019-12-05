@@ -1,7 +1,7 @@
 var fs  = require('fs');
 var mongoose = require('mongoose');
 
-const dbURI = 'mongodb://127.0.0.1:27017/notesapp';
+const dbURI = 'mongodb://127.0.0.1:27017/redditlite';
 var db = mongoose.connection;
 
 // handle DB events

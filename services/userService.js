@@ -59,7 +59,6 @@ module.exports.verifyUserLogin = ({username, email, password}) => {
 }
 
 module.exports.getUserById = (id) => {
-    // new Promise()
     return new Promise((resolve, reject) => {
         Models.user.findOne({ _id: id }, (error, user) => {
             if (error) reject(error);
