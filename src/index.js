@@ -10,6 +10,9 @@ import rootReducer from './redux/reducers/rootReducer';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
+
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
