@@ -194,3 +194,8 @@ body{
 .fa-user{
   color: green;
 }
+
+a {
+  color: inherit;
+  text-decoration: inherit; /* no underline */
+}
