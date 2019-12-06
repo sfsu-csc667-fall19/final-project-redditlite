@@ -132,7 +132,6 @@ const Dashboard = ({
                 <DropdownItem>Controversial</DropdownItem>
               </DropdownButton>
             </Col>
-<<<<<<< HEAD
           </Row>       */}
           <hr />
           {/* <Row >
@@ -181,54 +180,6 @@ const Dashboard = ({
                 </div>
               ))
             }
-=======
-          </Row>
-          <hr />
-          <Row>
-            <Col>
-              <Card>
-                <Card.Body className="text-left">
-                  <Card.Title>
-                    <h5>Title of the post</h5>
-                  </Card.Title>
-                  <Card.Text>
-                    <p>submitted n hours ago by Username to Category</p>
-                  </Card.Text>
-                  <footer className="blockquote-footer">30.8k comments</footer>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-          {notes.map((note, ind) => (
-            <div
-              className="Note-card"
-              key={ind}
-              onClick={() => editNoteComp(notes[ind])}
-              onMouseLeave={() => countViewComp(notes[ind])}
-            >
-                <Row>
-                  <Col>
-                    <Card>
-                      <Card.Body className="text-left">
-                        <Card.Title>
-                          <h5>{note.title}</h5>
-                        </Card.Title>
-                        <Card.Text>
-                          <p>
-                            submitted {note.timestamp} hours ago by{" "}
-                            {note.author.username}
-                          </p>
-                        </Card.Text>
-                        <footer className="blockquote-footer">
-                          {note.comments} comments
-                        </footer>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                </Row>
-            </div>
-          ))}
->>>>>>> navbar-branch
         </Container>
       </div>
     </div>

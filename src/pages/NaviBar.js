@@ -12,6 +12,7 @@ import {
     DropdownItem,
     Button
 } from "reactstrap";
+import Redirect from 'react-router-dom'
 import {connect} from 'react-redux'
 import { logoutUser } from "../redux/actions/userActions";
 
@@ -28,7 +29,7 @@ const NaviBar = ({dispatch,username}) => {
                 {/* <Collapse navbar> */}
                 <Nav className="" nav>
                     <NavItem>
-                        <NavLink href="/createPost"><Button onClick={accountLogOut}><i className="fa fa-pencil"> </i> Write Post</Button></NavLink>
+                        <NavLink href="/test/post/page"><Button><i className="fa fa-pencil"> </i> Write Post</Button></NavLink>
                     </NavItem>
 
                     <UncontrolledDropdown nav inNavbar>
@@ -39,7 +40,7 @@ const NaviBar = ({dispatch,username}) => {
                             <DropdownItem>View Profile</DropdownItem>
                             <DropdownItem>Option 2</DropdownItem>
                             <DropdownItem divider />
-                            <DropdownItem><i className="fa fa-sign-out"></i>Logout</DropdownItem>
+                            <DropdownItem onClick={accountLogOut}><i className="fa fa-sign-out"></i>Logout</DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </Nav>
