@@ -45,24 +45,51 @@ const DEFAULT_STATE = {
         text: 'lick me good',
         author: 'troll',
         parent: null,
+        comments: [],
         _createdAt: "Date.now()"
       },
       {
         text: 'gloria',
         author: 'llort',
         parent: null,
+        comments: [
+          {
+            text: 'sub com 0',
+            author: 'com0',
+            parent: 'some_uuid_which_does_not_concern_us',
+            comments: [], // will always be empty
+            _createdAt: "Date.now()"
+          }
+        ],
         _createdAt: "Date.now()"
       },
       {
         text: 'airolg',
         author: 'roll',
         parent: null,
+        comments: [],
         _createdAt: "Date.now()"
       },
       {
         text: 'doog em kcil',
         author: 'llor',
         parent: null,
+        comments: [
+          {
+            text: 'sub com 0',
+            author: 'com0',
+            parent: 'some_uuid_which_does_not_concern_us',
+            comments: [], // will always be empty
+            _createdAt: "Date.now()"
+          },
+          {
+            text: 'sub com 1',
+            author: 'com1',
+            parent: 'some_uuid_which_does_not_concern_us',
+            comments: [], // will always be empty
+            _createdAt: "Date.now()"
+          }
+        ],
         _createdAt: "Date.now()"
       }
     ]
