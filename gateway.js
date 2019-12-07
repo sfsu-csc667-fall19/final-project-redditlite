@@ -1,8 +1,8 @@
 const express   = require('express');
 const httpProxy = require('http-proxy');
-const mongoose  = require('mongoose');
+//const mongoose  = require('mongoose');
 const app       = express();
-const port      = process.env.PORT || 80;
+const port      = process.env.PORT || 5000;
 
 const apiProxy = httpProxy.createProxyServer();
 
@@ -16,6 +16,14 @@ app.all("/api/auth/*", (req, res) => {
   console.log(req.path)
   apiProxy.web(req, res, {
     target: 'http://localhost:3000',
+  });
+});
+
+app.all("/api/posts/*", (req, res) => {
+  // service2
+  console.log(req.path)
+  apiProxy.web(req, res, {
+    target: 'http://localhost:3001',
   });
 });
 
