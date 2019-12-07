@@ -11,13 +11,13 @@ const AUTHOR_EXCLUDES = '-password -__v -_id' // exclude these fields
  */
 module.exports.createComment = (commentObj) => {
     return new Promise((resolve, reject) => {
-        Models.comment.create(commentObj)
-        .populate('author', AUTHOR_EXCLUDES)
-        .exec( (error, comment) => {
+        Models.comment.create(commentObj, (error, comment) => {
             if (error) {
                 reject(error);
             } else {
-                resolve(comment);
+                comment.populate('author', AUTHOR_EXCLUDES)
+                    .execPopulate()
+                    .then(populatedComment => resolve(populatedComment));
             }
         });
     });

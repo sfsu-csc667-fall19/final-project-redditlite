@@ -9,11 +9,13 @@ const AUTHOR_EXCLUDES = '-password -__v -_id' // exclude these fields
  */
 module.exports.createPost = (postObj) => {
     return new Promise((resolve, reject) => {
-        Models.post.create(postObj).populate('author', AUTHOR_EXCLUDES).exec((error, post) => {
+        Models.post.create(postObj, (error, post) => {
             if (error) {
                 reject(error);
             } else {
-                resolve(post);
+                post.populate('author', AUTHOR_EXCLUDES)
+                .execPopulate()
+                .then((populatedPost) => resolve(populatedPost));
             }
         });
     });
@@ -90,7 +92,9 @@ module.exports.updatePost = (postObj) => {
             .exec((error, post) => {
                 if (error) {
                     reject(error);
-                } else {
+                } else if (!post) {
+                    reject(`${JSON.stringify(postObj)} not it Database!`);
+                }else {
                     post = Object.assign(post, postObj);
                     post.save((error, newObj) => {
                         if (error) 
