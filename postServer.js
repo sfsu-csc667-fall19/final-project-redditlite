@@ -40,7 +40,7 @@ const authentication = function(req, res, next){
         return res.status(403).send({
             ok: false,
             error: {
-                reason: "Auth server could not be reached!", code: 403
+                reason: "Forbidden!", code: 403
             }
         });
     })
@@ -55,7 +55,7 @@ const authentication = function(req, res, next){
 	    }
     }  
 */
-app.post('/api/posts/new', authentication, async (req, res) => {
+app.post('/api/posts/new', /*authentication,*/ async (req, res) => {
     try{
         if (!req.body.post) {
             return res.status(400).send({
@@ -65,11 +65,11 @@ app.post('/api/posts/new', authentication, async (req, res) => {
                 }
             });
         }
-        req.body.post.author = req.user._id;
+        req.body.post.author = req.user._id; 
+        console.log(req.body.post, 'postOBJ ------------------\n\n') // ADD THIS
         const newPost = await postService.createPost(req.body.post);
         console.log(newPost);
         res.data = {'post': newPost};
-
         return res.status(res.statusCode || 200)
             .send({
                 ok: true,
