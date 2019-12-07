@@ -3,33 +3,70 @@ const DEFAULT_STATE = {
   notes: [
     {
       title: 'first one',
-      description: 'like father like son',
-      timestamp: '15 mins',
-      author: {
-        username: 'monbo'
-      },
-      comments: '60k'
+      text: 'like father like son',
+      author: 'monbo',
+      num_comments: '60k',
+      _createdAt: 'Date.now()'
     },
     {
       title: 'second one',
-      description: 'sword is mighter than a knife?',
-      timestamp: '10 mins',
-      author: {
-        username: 'jumbo'
-      },
-      comments: '10k'
+      text: 'sword is mighter than a knife?',
+      author: 'jumbo',
+      num_comments: '10k',
+      _createdAt: 'Date.now()',
     },
     {
       title: 'third one',
-      description: 'something something dark side',
-      timestamp: '5 mins',
-      author: {
-        username: 'trash'
-      },
-      comments: '30k'
+      text: 'something something dark side',
+      author: 'trash',
+      num_comments: '30k',
+      _createdAt: 'Date.now()'
     },
+    {
+      title: 'fourth one',
+      text: 'good from far but far from good',
+      author: 'robo',
+      num_comments: '69k',
+      _createdAt: 'Date.now()'
+    },
+    {
+      title: 'fifth one',
+      text: 'heroes are born not made',
+      author: 'cliche',
+      num_comments: '1337k',
+      _createdAt: 'Date.now()'
+    }
   ], // default
   newNote: '',
+  post: {
+    // you will inject the data of the one u clicked on here
+    comments: [
+      {
+        text: 'lick me good',
+        author: 'troll',
+        parent: null,
+        _createdAt: "Date.now()"
+      },
+      {
+        text: 'gloria',
+        author: 'llort',
+        parent: null,
+        _createdAt: "Date.now()"
+      },
+      {
+        text: 'airolg',
+        author: 'roll',
+        parent: null,
+        _createdAt: "Date.now()"
+      },
+      {
+        text: 'doog em kcil',
+        author: 'llor',
+        parent: null,
+        _createdAt: "Date.now()"
+      }
+    ]
+  }
 };
 
 const notesReducer = (state = DEFAULT_STATE, action) => {
