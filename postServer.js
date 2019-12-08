@@ -65,7 +65,7 @@ app.post('/api/posts/new', /*authentication,*/ async (req, res) => {
                 }
             });
         }
-        req.body.post.author = req.user._id; 
+        req.body.post.author = req.body.user._id; 
         console.log(req.body.post, 'postOBJ ------------------\n\n') // ADD THIS
         const newPost = await postService.createPost(req.body.post);
         console.log(newPost);
