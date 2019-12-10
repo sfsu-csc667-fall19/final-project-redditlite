@@ -22,6 +22,7 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.
 
 .App-link {
   color: #09d3ac;
@@ -40,7 +41,12 @@
 }
 
 input[type=text]:focus {
-  background-color: lightblue;
+  box-shadow: 0 0 5px lightblue;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid lightblue;
+
+ 
 }
 
 input[type=text] {
@@ -48,6 +54,8 @@ input[type=text] {
   margin: 8px 0;
   box-sizing: border-box;
   min-width: 500px;
+  border:2px solid lightgrey;
+ 
 }
 
 input[type=note] {
@@ -59,7 +67,11 @@ input[type=note] {
 }
 
 input[type=password]:focus {
-  background-color: lightblue;
+  box-shadow: 0 0 5px lightblue;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid lightblue;
+  
 }
 
 input[type=password] {
@@ -67,19 +79,10 @@ input[type=password] {
   margin: 8px 0;
   box-sizing: border-box;
   min-width: 500px;
+  border:2px solid lightgrey;
 } 
-
-.button {
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
-  padding: 10px 24px;
-  background-color: #4CAF50;
-  border-radius: 12px;
-}
-
-.button:hover {
-  background-color: #4CAF50; /* Green */
-  color: white;
+.button{
+  margin-top: 10px;
 }
 
 .Note-card {
@@ -183,6 +186,12 @@ body{
   top: 0;
   width: 100%;
 }
+.logo{
+  font-family: 'Share Tech Mono', monospace;
+  color:  rgb(153,0,0);
+  font-size: 4rem;
+  margin-bottom:10px;
+}
 .nav{
   border-radius: 30px;
   background-color: rgb(204,204,204);
@@ -199,3 +208,9 @@ a {
   color: inherit;
   text-decoration: inherit; /* no underline */
 }
+.forms{
+  margin-top: 150px;
+ 
+}
+
+

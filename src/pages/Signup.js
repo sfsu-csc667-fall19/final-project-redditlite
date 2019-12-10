@@ -54,47 +54,47 @@ const Login = ({ dispatch, email, username, isLoggedIn }) => {
   }
 
   if (isLoggedIn) {
-    return <Redirect to="/dashboard" />;
+    // return <Redirect to="/dashboard" />;
   }
 
   return (
-    <div>
+    <div className="forms">
+      <h1 className="logo">redditlite</h1>
       <h2>Sign Up</h2>
       <div>
         <div className="App-header">
           <input
-            value={ email }
-            placeholder="EMAIL"
+            value={email}
+            placeholder="Email"
             type="text"
-            onChange={ e => updateEmail(e.target.value) }
+            onChange={e => updateEmail(e.target.value)}
           />
           <input
-            value={ username }
-            placeholder="USERNAME"
+            value={username}
+            placeholder="Username"
             type="text"
-            onChange={ e => updateUsername(e.target.value) }
+            onChange={e => updateUsername(e.target.value)}
           />
           <input
-            value={ password }
-            placeholder="PASSWORD"
+            value={password}
+            placeholder="New Password"
             type="password"
-            onChange={ e => updatePassword(e.target.value) }
+            onChange={e => updatePassword(e.target.value)}
           />
           <input
-            value={ confPassword }
-            placeholder="PASSWORD"
+            value={confPassword}
+            placeholder="Confirm Password"
             type="password"
-            onChange={ e => updateConfPassword(e.target.value) }
-            onKeyPress={ e => e.key === 'Enter' ? verify() : '' }
+            onChange={e => updateConfPassword(e.target.value)}
+            onKeyPress={e => (e.key === 'Enter' ? verify() : '')}
           />
         </div>
 
         <div>
-          <button className="button" onClick={ () => verify() }>
+          <button class="button btn btn-danger btn-lg" onClick={() => verify()}>
             Submit
           </button>
         </div>
-
       </div>
     </div>
   );

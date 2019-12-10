@@ -1,9 +1,9 @@
 import React from 'react';
 import md5 from 'md5'
-
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { setEmail, loginUser } from '../redux/actions/userActions'
+
 
 const Login = ({ dispatch, email, isLoggedIn }) => {
   const [password, setPassword] = React.useState('');
@@ -33,26 +33,27 @@ const Login = ({ dispatch, email, isLoggedIn }) => {
   }
 
   return (
-    <div>
+    <div class="forms">
+      <h1 className="logo">redditlite</h1>
       <h2>Log In</h2>
       <div>
         <div className="App-header">
-          <input
-            value={ email }
-            placeholder="EMAIL"
+          <input 
+            value={email}
+            placeholder="Email"
             type="text"
-            onChange={ e => updateEmail(e.target.value) }
+            onChange={e => updateEmail(e.target.value)}
           />
           <input
-            value={ password }
-            placeholder="PASSWORD"
+            value={password}
+            placeholder="Password"
             type="password"
-            onChange={ e => setPassword(e.target.value) }
-            onKeyPress={ e => e.key === 'Enter' ? verify() : '' }
+            onChange={e => setPassword(e.target.value)}
+            onKeyPress={e => (e.key === 'Enter' ? verify() : '')}
           />
         </div>
         <div>
-          <button className="button" onClick={ () => verify() }>
+          <button class="button btn btn-danger btn-lg" onClick={() => verify()}>
             Submit
           </button>
         </div>
