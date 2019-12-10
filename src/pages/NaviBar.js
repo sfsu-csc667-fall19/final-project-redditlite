@@ -37,8 +37,8 @@ const NaviBar = ({dispatch,username}) => {
                             Username{username} <i className="fa fa-user"></i>
                         </DropdownToggle>
                         <DropdownMenu right>
-                            <DropdownItem>View Profile</DropdownItem>
-                            <DropdownItem>Option 2</DropdownItem>
+                            <DropdownItem href='/test/post/page'>View Profile</DropdownItem>
+                            <DropdownItem href='/test/post/page'>Option 2</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem onClick={accountLogOut}><i className="fa fa-sign-out"></i>Logout</DropdownItem>
                         </DropdownMenu>
