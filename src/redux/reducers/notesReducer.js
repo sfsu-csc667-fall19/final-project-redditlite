@@ -2,6 +2,7 @@ const DEFAULT_STATE = {
   // notes: [], // default
   notes: [
     {
+      _id: 'first_uuid',
       title: 'first one',
       text: 'like father like son',
       author: 'monbo',
@@ -9,6 +10,7 @@ const DEFAULT_STATE = {
       _createdAt: 'Date.now()'
     },
     {
+      _id: 'second_uuid',
       title: 'second one',
       text: 'sword is mighter than a knife?',
       author: 'jumbo',
@@ -16,6 +18,7 @@ const DEFAULT_STATE = {
       _createdAt: 'Date.now()',
     },
     {
+      _id: '3rd_uuid',
       title: 'third one',
       text: 'something something dark side',
       author: 'trash',
@@ -23,6 +26,7 @@ const DEFAULT_STATE = {
       _createdAt: 'Date.now()'
     },
     {
+      _id: '4th_uuid',
       title: 'fourth one',
       text: 'good from far but far from good',
       author: 'robo',
@@ -30,6 +34,7 @@ const DEFAULT_STATE = {
       _createdAt: 'Date.now()'
     },
     {
+      _id: '5th_uuid',
       title: 'fifth one',
       text: 'heroes are born not made',
       author: 'cliche',

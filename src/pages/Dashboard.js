@@ -22,6 +22,7 @@ import {
   editNote,
   countView
 } from "../redux/actions/notesActions";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Dashboard = ({
   dispatch,
@@ -29,11 +30,14 @@ const Dashboard = ({
   username,
   notes,
   isLoggedIn,
-  newNote
+  newNote,
+  match
 }) => {
   const accountLogOut = () => {
     dispatch(logoutUser());
   };
+
+  
 
   const editNoteComp = entry => {
     let promptVal = window.prompt("How would you like to change the note?", "");
@@ -70,6 +74,8 @@ const Dashboard = ({
   const countViewComp = entry => {
     dispatch(countView(entry._id));
   };
+
+ 
 
   if (!isLoggedIn) {
     return <Redirect to="/" />;
@@ -151,35 +157,34 @@ const Dashboard = ({
                 </Card>
               </Col>
             </Row> */}
-            {
-              notes.map((note, ind) => (
-                <div key={ ind } >
-                  <Row >
-                    <Col>
-                      <Card
-                        onClick={ () => <Redirect to="/test/post/page" /> }
-                      >
-                        <Card.Body className="text-left" >
-                          <Card.Title >
-                            <h5>{ note.title }</h5>
-                          </Card.Title>
+          {notes.map((note, ind) => (
+            <div key={ind}>
+              <Row>
+                <Col>
+                  <Card onClick={() => window.location.href = `/post/${note._id}` }>
+                    <Card.Body className="text-left">
+                      { note._id }
+                      <Card.Title>
+                        <h5>{note.title}</h5>
+                      </Card.Title>
 
-                          <Card.Text>
-                            <p>
-                              submitted { note.timestamp } hours ago by { note.author.username }
-                            </p>
-                          </Card.Text>
+                      <Card.Text>
+                        <p>
+                          submitted {note.timestamp} hours ago by{' '}
+                          {note.author.username}
+                        </p>
+                      </Card.Text>
 
-                          <footer  className="blockquote-footer" >
-                            { note.comments } comments
-                          </footer>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row><br />
-                </div>
-              ))
-            }
+                      <footer className="blockquote-footer">
+                        {note.comments} comments
+                      </footer>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <br />
+            </div>
+          ))}
         </Container>
       </div>
     </div>

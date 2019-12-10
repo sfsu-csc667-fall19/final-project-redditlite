@@ -56,6 +56,7 @@ const App = ({ dispatch, isLoggedIn }) => {
         <Route path="/test/post/page" component={ PostPage } />
         <Route path="/signup" component={ Signup } />
         <Route path="/dashboard" component={ Dashboard } />
+        <Route path="/post/:id" component={ PostPage }/>
         {/* <Route path="/login" component={ Login } /> */}
         <Route path="/" component={ Login } />
       </Switch>
