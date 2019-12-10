@@ -67,7 +67,23 @@ input[type=password] {
   margin: 8px 0;
   box-sizing: border-box;
   min-width: 500px;
-} 
+}
+
+textarea {
+  resize: both;
+  min-height: 30vh;
+}
+
+textarea[type=text] {
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  min-width: 500px;
+}
+
+textarea[type=text]:focus {
+  background-color: lightblue;
+}
 
 .button {
   -webkit-transition-duration: 0.4s; /* Safari */

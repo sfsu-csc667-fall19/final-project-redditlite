@@ -13,10 +13,10 @@ import {
     Button
 } from "reactstrap";
 import Redirect from 'react-router-dom'
-import {connect} from 'react-redux'
-import { logoutUser } from "../redux/actions/userActions";
+import { connect } from 'react-redux'
+import { logoutUser } from "../redux/actions/userActions"
 
-const NaviBar = ({dispatch,username}) => {
+const NaviBar = ({ dispatch, username }) => {
 
     const accountLogOut = ()=>{
         dispatch(logoutUser)
@@ -29,7 +29,7 @@ const NaviBar = ({dispatch,username}) => {
                 {/* <Collapse navbar> */}
                 <Nav className="" nav>
                     <NavItem>
-                        <NavLink href="/test/post/page"><Button><i className="fa fa-pencil"> </i> Write Post</Button></NavLink>
+                        <NavLink href="/post/create"><Button><i className="fa fa-pencil"> </i> Write Post</Button></NavLink>
                     </NavItem>
 
                     <UncontrolledDropdown nav inNavbar>

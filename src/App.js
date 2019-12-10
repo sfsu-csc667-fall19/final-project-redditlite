@@ -1,17 +1,17 @@
 import React from 'react'
 import './App.css'
 
-import { Switch, Route, Link, Redirect } from "react-router-dom";
-import { connect } from 'react-redux';
+import { Switch, Route, Link, Redirect } from "react-router-dom"
+import { connect } from 'react-redux'
 
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
 import Signup from './pages/Signup'
 import PostPage from './pages/PostPage'
+import CreatePost from './pages/CreatePost'
 
 import { loginUser } from './redux/actions/userActions'
-import NaviBar from './pages/NaviBar';
+import NaviBar from './pages/NaviBar'
 
 const App = ({ dispatch, isLoggedIn }) => {
 
@@ -53,10 +53,11 @@ const App = ({ dispatch, isLoggedIn }) => {
         }
       </div>
       <Switch>
-        <Route path="/test/post/page" component={ PostPage } />
+        {/* <Route path="/test/post/page" component={ PostPage } /> */}
         <Route path="/signup" component={ Signup } />
         <Route path="/dashboard" component={ Dashboard } />
-        <Route path="/post/:id" component={ PostPage }/>
+        <Route path="/post/create" component={ CreatePost } />
+        <Route path="/post/:id" component={ PostPage } />
         {/* <Route path="/login" component={ Login } /> */}
         <Route path="/" component={ Login } />
       </Switch>
