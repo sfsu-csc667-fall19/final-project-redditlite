@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 import { Container, Row, Col, DropdownButton, DropdownItem, Card, Button } from 'react-bootstrap';
 
-const PostPage = ({ isLoggedIn }) => {
-  const [mockData, setMockData, post] = React.useState([])
+const PostPage = ({ isLoggedIn, post }) => {
+  const [mockData, setMockData] = React.useState([])
 
   React.useEffect(() => {
     setMockData(['a', 'b', 'c'])
@@ -32,47 +32,42 @@ const PostPage = ({ isLoggedIn }) => {
         } */}
 
         <div className="Post-card">
-          <h3>oisefoeiufpnes</h3>
-          <dir className="Post-signature">
-            By kejhf
-          </dir>
-          <p>
-            paifjepsirugjpaiuf
-          </p>
-          <div className="Post-toolbar">
-            <i className="material-icons md-14">forum</i>
-            <b className="p-right">3 Comments</b>
-            <i className="material-icons md-14">share</i>
-            <b className="p-right">Share</b>
-            <i className="material-icons md-14">save</i>
-            <b className="p-right">Save</b>
-          </div>
+            <h3>oisefoeiufpnes</h3>
+            <dir className="Post-signature">
+              By kejhf
+            </dir>
+            <p>
+              paifjepsirugjpaiuf
+            </p>
+            <div className="Post-toolbar">
+              <i className="material-icons md-14">forum</i>
+              <b className="p-right">3 Comments</b>
+              <Button type="button" class="btn btn-block">
+                Reply
+              </Button>
+            </div>
+         
+          
         </div>
 
         {
-          post && post.map((post, ind) => (
-            <dir className="Comment-card" key={ ind }>
+          (post && post.comments) && post.comments.map((firstComment, fCindex) => (
+            <dir className="Comment-card" key={ fCindex }>
+              { firstComment.text } <br />
               <dir className="Post-signature">
-                By {post.comments.author}
+                By { firstComment.author } at { firstComment._createdAt }
               </dir>
-              <p>
-                {post.comments.text}
-              </p>
-
-              {/* Comments of comment */}
+              
               {
-                post.comments.comments && post.comments.comments.map((post,ind) =>(
-                  <dir className="Comment-card" key={ ind }>
+                firstComment.comments && firstComment.comments.map((secondComment, sCindex) => (
+                  <dir className="Comment-card" key={ sCindex }>
+                    { secondComment.text } <br />
                     <dir className="Post-signature">
-                      By {post.comments.comments.author}
+                      By { secondComment.author } at { secondComment._createdAt }
                     </dir>
-                    <p>
-                      {post.comments.comments.text}
-                    </p>
                   </dir>
                 ))
               }
-
             </dir>
           ))
         }
