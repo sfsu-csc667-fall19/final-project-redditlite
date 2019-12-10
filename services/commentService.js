@@ -5,6 +5,30 @@ const _ = require('lodash');
 const AUTHOR_EXCLUDES = '-password -__v -_id' // exclude these fields
 
 /**
+ * delete comment
+ * @param commentId is the id of comment to be deleted
+ * @returns true 
+ */
+module.exports.deleteComment = (commentId) => {
+    return new Promise((resolve, reject) => {
+        Models.comment.findById(commentId, (error, comment) => {
+            if (error) {
+                reject(error);
+            } else {
+                Models.comment.findByIdAndRemove(id, function(err){
+                    if (err){
+                        reject(err);
+                    } else {
+                        resolve(true);
+                    }
+                });
+            }
+        });
+    });
+}
+
+
+/**
  * create a new comment
  * @param commentObj is the object to be created
  * @returns created comment

@@ -1,5 +1,7 @@
 const Models = require('../models');
 
+const commentService = require('./services/commentService');
+
 const AUTHOR_EXCLUDES = '-password -__v -_id' // exclude these fields
 
 /**
@@ -34,6 +36,20 @@ module.exports.findAllPost = (postObj) => {
                 reject(error);
             else
                 resolve(posts)
+        });
+    });
+}
+// end point to get post by id - wasnt clear on how to get it so just made another endpoint for it
+module.exports.findPostById = (postId) => {
+    return new Promise((resolve, reject) => {
+        Models.post.findById(postId).populate('author', AUTHOR_EXCLUDES).exec((error, post) => {
+            if (error)
+                reject(error);
+            else
+            {
+                post.comments = await commentService.getComments(req.param.id);
+                resolve(post);
+            }
         });
     });
 }
