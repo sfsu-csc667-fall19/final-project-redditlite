@@ -1,5 +1,15 @@
 import axios from 'axios';
 
+export const addFirstComment = comment => ({
+  type: 'ADD_FIRST_LAYER_COMMENT',
+  comment
+})
+
+export const addSecondComment = (comment, index) => ({
+  type: 'ADD_SECOND_LAYER_COMMENT',
+  comment, index
+})
+
 const setNotes = notes => ({
   type: 'NOTES_SET_NOTES',
   notes
