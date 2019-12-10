@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col, DropdownButton, DropdownItem, Card, Button } from 'react-bootstrap';
 
 const PostPage = ({ isLoggedIn }) => {
-  const [mockData, setMockData] = React.useState([])
+  const [mockData, setMockData, post] = React.useState([])
 
   React.useEffect(() => {
     setMockData(['a', 'b', 'c'])
@@ -32,12 +32,12 @@ const PostPage = ({ isLoggedIn }) => {
         } */}
 
         <div className="Post-card">
-          <h3>This is the Title of the Test Post</h3>
+          <h3>oisefoeiufpnes</h3>
           <dir className="Post-signature">
-            By Admin
+            By kejhf
           </dir>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            paifjepsirugjpaiuf
           </p>
           <div className="Post-toolbar">
             <i className="material-icons md-14">forum</i>
@@ -50,14 +50,29 @@ const PostPage = ({ isLoggedIn }) => {
         </div>
 
         {
-          mockData && mockData.map((data, ind) => (
+          post && post.map((post, ind) => (
             <dir className="Comment-card" key={ ind }>
               <dir className="Post-signature">
-                By Admin
+                By {post.comments.author}
               </dir>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                {post.comments.text}
               </p>
+
+              {/* Comments of comment */}
+              {
+                post.comments.comments && post.comments.comments.map((post,ind) =>(
+                  <dir className="Comment-card" key={ ind }>
+                    <dir className="Post-signature">
+                      By {post.comments.comments.author}
+                    </dir>
+                    <p>
+                      {post.comments.comments.text}
+                    </p>
+                  </dir>
+                ))
+              }
+
             </dir>
           ))
         }
@@ -67,7 +82,8 @@ const PostPage = ({ isLoggedIn }) => {
 };
 
 const mapStatetoProps = state => ({
-  isLoggedIn: state.userReducer.isLoggedIn
+  isLoggedIn: state.userReducer.isLoggedIn,
+  post: state.notesReducer.post
 })
 
 export default connect(mapStatetoProps)(PostPage);
