@@ -1,12 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 
 import { Button } from 'react-bootstrap'
 
-const CreatePost = ({ isLoggedIn }) => {
+import { createNewPost } from '../redux/actions/notesActions'
+
+const CreatePost = ({ dispatch, isLoggedIn, username }) => {
   const [title, setTitle] = React.useState('')
   const [description, setDescription] = React.useState('')
+
+  let history = useHistory()
 
   const verify = () => {
     if (!title) {
@@ -14,7 +18,8 @@ const CreatePost = ({ isLoggedIn }) => {
     } else if (!description) {
       alert('Description cannot be empty!')
     } else {
-      // TODO: update state with redux
+      dispatch(createNewPost(title, description, username))
+      history.push('/dashboard')
     }
   }
 
@@ -24,6 +29,7 @@ const CreatePost = ({ isLoggedIn }) => {
 
   return (
     <div>
+      <br />
       <h3>Create Post</h3>
       <input
         type="text" placeholder="Title of the post..."
@@ -39,7 +45,7 @@ const CreatePost = ({ isLoggedIn }) => {
       >
       </textarea><br />
 
-      <Button onClick={ () => verify() }>
+      <Button style={{ "minWidth": "300px" }} onClick={ () => verify() }>
         Submit
       </Button>
     </div>
@@ -47,7 +53,8 @@ const CreatePost = ({ isLoggedIn }) => {
 }
 
 const mapStatetoProps = state => ({
-  isLoggedIn: state.userReducer.isLoggedIn
+  isLoggedIn: state.userReducer.isLoggedIn,
+  username: state.userReducer.username
 })
 
-export default connect(mapStatetoProps)(CreatePost);
+export default connect(mapStatetoProps)(CreatePost)

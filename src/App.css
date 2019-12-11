@@ -122,7 +122,7 @@ textarea[type=text]:focus {
 
 .Post-card {
   width: 90%;
-  margin: 1em auto;
+  margin: 0em auto;
   text-align: left;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
@@ -187,23 +187,29 @@ textarea[type=text]:focus {
 body{
   padding: 70px 0 0 0;
 }
+
 /* NAVBAR */
 #brand{
-  margin-left: 10em;
   font-size: 2rem;
   color:  rgb(153,0,0);
 }
 
-.sticky{
+.sticky {
   position: fixed;
   top: 0;
   width: 100%;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
 .nav{
   border-radius: 30px;
   background-color: rgb(204,204,204);
   font-family: 'Share Tech Mono', monospace;
 }
+
 .he{
   height: 700px;
 }

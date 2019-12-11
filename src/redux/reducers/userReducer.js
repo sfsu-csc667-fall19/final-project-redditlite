@@ -1,11 +1,8 @@
-// Creating a reducer
-
-// Step 1 initialize state
 const INITIAL_STATE = {
   email: '',
   username: '',
-  isLoggedIn: true
-};
+  isLoggedIn: false
+}
 
 // Step 2 create listener function
 const userReducer = (state = INITIAL_STATE, action) => {

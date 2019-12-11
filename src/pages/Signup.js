@@ -1,8 +1,12 @@
 import React from 'react'
 import md5 from 'md5'
 
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom'
+
+import { Button } from "react-bootstrap"
+
+import { connect } from 'react-redux'
+
 import {
   setEmail, setUsername, registerUser
 } from '../redux/actions/userActions'
@@ -10,6 +14,8 @@ import {
 const Login = ({ dispatch, email, username, isLoggedIn }) => {
   const [password, setPassword] = React.useState('')
   const [confPassword, setConfPassword] = React.useState('')
+
+  let history = useHistory()
 
   const verify = () => {
     if (!email.includes('@') || !email.includes('.')) {
@@ -54,11 +60,12 @@ const Login = ({ dispatch, email, username, isLoggedIn }) => {
   }
 
   if (isLoggedIn) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/dashboard" />
   }
 
   return (
     <div>
+      <br />
       <h2>Sign Up</h2>
       <div>
         <div className="App-header">
@@ -89,16 +96,33 @@ const Login = ({ dispatch, email, username, isLoggedIn }) => {
           />
         </div>
 
+        <div style={{ "paddingTop": "10px" }}>
+          <Button
+            variant="primary" onClick={ () => verify() } size="lg"
+            style={{ "minWidth": "300px" }}
+          >
+            Sign Up
+          </Button>
+        </div>
+
+        <br />
+
         <div>
-          <button className="button" onClick={ () => verify() }>
-            Submit
-          </button>
+          Already have an account
+          <span style={{ "paddingLeft": "3px" }}>
+            <Button
+              variant="outline-secondary"
+              onClick={ () => history.push('/') }
+            >
+              Go To Log In Page
+            </Button>
+          </span>
         </div>
 
       </div>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = state => ({
   email: state.userReducer.email,
@@ -106,4 +130,4 @@ const mapStateToProps = state => ({
   isLoggedIn: state.userReducer.isLoggedIn
 })
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(Login)

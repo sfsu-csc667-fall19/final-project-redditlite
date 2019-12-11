@@ -1,13 +1,44 @@
 import axios from 'axios';
 
-export const addFirstComment = comment => ({
-  type: 'ADD_FIRST_LAYER_COMMENT',
-  comment
+// TODO: look up to db to get all the associated data
+export const setPostId = _id => ({
+  type: 'SET_POST_ID',
+  postId: _id
 })
 
-export const addSecondComment = (comment, index) => ({
+export const createNewPost = (title, description, username) => ({
+  type: 'CREATE_NEW_POST',
+  post: {
+    _id: 'some_id',
+    title: title,
+    text: description,
+    author: username,
+    num_comments: 0,
+    _createdAt: Date(Date.now())
+  }
+})
+
+export const addFirstComment = (comment, username) => ({
+  type: 'ADD_FIRST_LAYER_COMMENT',
+  comment: {
+    text: comment,
+    author: username,
+    parent: null,
+    comments: [],
+    _createdAt: Date(Date.now())
+  }
+})
+
+export const addSecondComment = (comment, index, username) => ({
   type: 'ADD_SECOND_LAYER_COMMENT',
-  comment, index
+  comment: {
+    text: comment,
+    author: username,
+    parent: null,
+    comments: [],
+    _createdAt: Date(Date.now())
+  },
+  index
 })
 
 const setNotes = notes => ({

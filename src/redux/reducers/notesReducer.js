@@ -42,7 +42,6 @@ const DEFAULT_STATE = {
       _createdAt: 'Date.now()'
     }
   ], // default
-  newNote: '',
   post: {
     // you will inject the data of the one u clicked on here
     comments: [
@@ -99,10 +98,25 @@ const DEFAULT_STATE = {
       }
     ]
   }
-};
+}
 
 const notesReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
+    case 'CREATE_NEW_POST':
+      state.notes.push(action.post)
+      return {
+        ...state
+      }
+    case 'ADD_FIRST_LAYER_COMMENT':
+      state.post.comments.push(action.comment)
+      return {
+        ...state
+      }
+    case 'ADD_SECOND_LAYER_COMMENT':
+      state.post.comments[action.index].comments.push(action.comment)
+      return {
+        ...state
+      }
     case 'NOTES_SET_NEW_NOTE':
       return {
         ...state,

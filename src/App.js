@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 
-import { Switch, Route, Link, Redirect } from "react-router-dom"
+import { Switch, Route, Redirect } from "react-router-dom"
 import { connect } from 'react-redux'
 
 import Login from './pages/Login'
@@ -29,58 +29,28 @@ const App = ({ dispatch, isLoggedIn }) => {
 
     if (email) {
       dispatch(loginUser({
-        user: {
-          email, password
-        }
+        user: { email, password }
       }))
     }
   }, []); // VERY IMPORTANT NEEDS THE EMPTY ARRAY
 
   return (
     <div className="App">
-      {/* {
-        isLoggedIn && (
-          <Redirect to="/dashboard" />
-        )
-      } */}
-      <div className="nav-bar">
-        {
-          isLoggedIn && (
-            <div>
-              <NaviBar />
-            </div>
-          )
-        }
-      </div>
+      <NaviBar />
+      
       <Switch>
-        {/* <Route path="/test/post/page" component={ PostPage } /> */}
         <Route path="/signup" component={ Signup } />
         <Route path="/dashboard" component={ Dashboard } />
         <Route path="/post/create" component={ CreatePost } />
         <Route path="/post/:id" component={ PostPage } />
-        {/* <Route path="/login" component={ Login } /> */}
         <Route path="/" component={ Login } />
       </Switch>
-
-      {/* <div className="App-header">
-        <input
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button onClick={validate}>Submit</button>
-        <button onClick={fetchProtectedData}>Get Data</button>
-      </div> */}
     </div>
   );
 }
 
 const mapStateToProps = state => ({
   isLoggedIn: state.userReducer.isLoggedIn,
-});
+})
 
 export default connect(mapStateToProps)(App);

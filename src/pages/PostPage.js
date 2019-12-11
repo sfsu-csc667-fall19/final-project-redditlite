@@ -1,54 +1,58 @@
 import React from 'react';
 
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
-import { Container, Row, Col, DropdownButton, DropdownItem, Card, Button, Modal, InputGroup, FormControl } from 'react-bootstrap';
+import {
+  Container, Button, Modal, InputGroup, FormControl, Row, Col
+} from 'react-bootstrap'
 
-import { addFirstComment, addSecondComment } from '../redux/actions/notesActions'
+import {
+  addFirstComment, addSecondComment
+} from '../redux/actions/notesActions'
 
-
-
-const PostPage = ({ isLoggedIn, post }) => {
+const PostPage = ({ dispatch, isLoggedIn, post, username }) => {
   const [firstReply, setFirstReply] = React.useState('')
   const [secondReply, setSecondReply] = React.useState('')
+  const [showPost, setShowPost] = React.useState(false)
+  const [show, setShow] = React.useState(false)
 
-  // React.useEffect(() => {
-  //   setMockData(['a', 'b', 'c'])
-  // }, [])
+  const [parentIndex, setParentIndex] = React.useState(-1)
 
-  const [show, setShow] = React.useState(false);
+  let history = useHistory()
+  let { id } = useParams()
 
+  React.useEffect(() => {
+    console.log(id)
+  }, [])
 
-  const handleFirstComment = firstReply => {
-    addFirstComment(firstReply)
-    setShow(false)
+  if (!isLoggedIn) {
+    setTimeout(() => {
+      if (!isLoggedIn) {
+        history.push('/')
+      }
+    }, 1000)
   }
 
-  const handleSecondComment = (secondComment, fCindex) => {
-    addSecondComment(secondComment, fCindex)
+  const handleFirstComment = firstReply => {
+    dispatch(addFirstComment(firstReply, username))
+    setShowPost(false)
+  }
+
+  const invokeSecondComment = fCindex => {
+    setParentIndex(fCindex)
+    setShow(true)
+  }
+
+  const handleSecondComment = secondComment => {
+    dispatch(addSecondComment(secondComment, parentIndex, username))
     setShow(false)
   }
 
   return (
-    <div>
+    <div hidden={ !isLoggedIn }>
+      <br />
       <Container>
-        {/* <h2>POST PAGE</h2> */}
-
-        {/* <button
-          onClick={ () => testData() }
-        >
-          Test
-        </button> */}
-
-        {/* {
-          !isLoggedIn && (
-            <div>
-              Hello
-            </div>
-          )
-        } */}
-
         <div className="Post-card">
             <h3>oisefoeiufpnes</h3>
             <dir className="Post-signature">
@@ -58,13 +62,25 @@ const PostPage = ({ isLoggedIn, post }) => {
               paifjepsirugjpaiuf
             </p>
             <div className="Post-toolbar">
-              <i className="material-icons md-14">forum</i>
-              <b className="p-right">3 Comments</b>
-              <Button variant="secondary" size="small" onClick={ () => setShow(true)}>
-                Reply
-              </Button>
+              <Container>
+                <Row>
+                  <Col md={ 10 }>
+                    <i className="material-icons md-14">forum</i>
+                    <b className="p-right">3 Comments</b>
+                  </Col>
 
-              <Modal show={ show } onHide={ () => setShow(false) } centered>
+                  <Col>
+                    <Button
+                      variant="outline-secondary" size="small"
+                      onClick={ () => setShowPost(true) }
+                    >
+                      Comment
+                    </Button>
+                  </Col>
+                </Row>
+              </Container>
+
+              <Modal show={ showPost } onHide={ () => setShowPost(false) } centered>
                 <Modal.Header closeButton>
                   <Modal.Title>Your Comment</Modal.Title>
                 </Modal.Header>
@@ -75,11 +91,16 @@ const PostPage = ({ isLoggedIn, post }) => {
                       as = "textarea"
                       onChange={ e => setFirstReply(e.target.value) }
                     />
-                    <InputGroup.Append>
-                      <Button variant="secondary" onClick={ () => handleFirstComment(firstReply) }>Post</Button>
-                    </InputGroup.Append>
                   </InputGroup>
                   
+                  <Modal.Footer>
+                    <Button
+                      variant="outline-secondary"
+                      onClick={ () => handleFirstComment(firstReply) }
+                    >
+                      Post
+                    </Button>
+                  </Modal.Footer>
                 </Modal.Body>
               </Modal>
             </div>
@@ -92,38 +113,48 @@ const PostPage = ({ isLoggedIn, post }) => {
             <dir className="Comment-card" key={ fCindex }>
               { firstComment.text } <br />
               <dir className="Post-signature">
-                By { firstComment.author } at { firstComment._createdAt }
-                <Button variant="secondary" size="small" onClick={ () => setShow(true) }>
-                      Reply
-                    </Button>
+                <Container>
+                  <Row>
+                    <Col md={ 10 }>
+                      By { firstComment.author } at { firstComment._createdAt }
+                    </Col>
+                    <Col>
+                      <Button
+                        variant="outline-secondary" size="small"
+                        onClick={ () => invokeSecondComment(fCindex) }
+                      >
+                        Reply
+                      </Button>
+                    </Col>
+                  </Row>
+                </Container>
 
-                    <Modal show={show} onHide={ () => setShow(false) } centered>
-                      <Modal.Header closeButton>
-                        <Modal.Title>Your Comment</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <InputGroup>
-                          <FormControl
-                            placeholder = "Your words here"
-                            as = "textarea"
-                            style={{ "min-height": "30vh" }}
-                            onChange={ e => setSecondReply(e.target.value) }
-                          />
-                        </InputGroup>
-                        <Modal.Footer>
-                          <Button
-                            style={{ "align": "right" }}
-                            variant="secondary" type="sm"
-                            onClick={ () => handleSecondComment(secondReply, fCindex) }
-                          >
-                            Comment
-                          </Button>
-                        </Modal.Footer>
-                        
-                        
-                      </Modal.Body>                    
-                    </Modal>
-
+                <Modal show={ show } onHide={ () => setShow(false) } centered>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Your Comment</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <InputGroup>
+                      <FormControl
+                        placeholder = "Your words here"
+                        as = "textarea"
+                        style={{ "minHeight": "30vh" }}
+                        onChange={ e => setSecondReply(e.target.value) }
+                      />
+                    </InputGroup>
+                    <Modal.Footer>
+                      <Button
+                        style={{ "align": "right" }}
+                        variant="outline-secondary" type="sm"
+                        onClick={
+                          () => handleSecondComment(secondReply)
+                        }
+                      >
+                        Submit
+                      </Button>
+                    </Modal.Footer>
+                  </Modal.Body>                    
+                </Modal>
               </dir>
               
               {
@@ -142,12 +173,13 @@ const PostPage = ({ isLoggedIn, post }) => {
         }
       </Container>
     </div>
-  );
-};
+  )
+}
 
 const mapStatetoProps = state => ({
   isLoggedIn: state.userReducer.isLoggedIn,
-  post: state.notesReducer.post
+  post: state.notesReducer.post,
+  username: state.userReducer.username
 })
 
-export default connect(mapStatetoProps)(PostPage);
+export default connect(mapStatetoProps)(PostPage)
