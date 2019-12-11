@@ -82,6 +82,24 @@ input[type=password] {
   border:2px solid lightgrey;
 } 
 
+}
+
+textarea {
+  resize: both;
+  min-height: 30vh;
+}
+
+textarea[type=text] {
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  min-width: 500px;
+}
+
+textarea[type=text]:focus {
+  background-color: lightblue;
+}
+
 .button {
   display: inline-block;
   border-radius: 4px;
