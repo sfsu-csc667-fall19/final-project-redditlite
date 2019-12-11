@@ -54,7 +54,7 @@ const Login = ({ dispatch, email, isLoggedIn }) => {
         </div>
         <div>
           <button class="button btn-lg" onClick={() => verify()}>
-            Log In
+           <span>Log In</span> 
           </button>
         </div>
       </div>
