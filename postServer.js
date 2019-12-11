@@ -2,6 +2,7 @@ const app = require('express')();
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const postService = require('./services/postService');
+const commentService = require('./services/commentService');
 
 const port = 3001;
 
@@ -45,6 +46,93 @@ const authentication = function(req, res, next){
     })
 };
 
+// comments on post - get post id 
+/* !!! Get post by id */
+// app.get('/api/post/:id', async (req, res, next) =>{
+//     try {
+//         if (!req.params.id) {
+//             return res.status(400).send({
+//                 ok: false,
+//                 error: {
+//                     reason: "No id provided", code: 400
+//                 }
+//             });
+//         }
+//         console.log(req.params.id)
+//         const post = await postService.findPostById(req.param.id);
+//         res.data = { post:  post};
+//         handle200Response(req, res);
+//     } catch (error) {
+//         console.log("ERRORED /api/notes/all", error);
+//         return res.status(400).send({
+//             ok: false,
+//             error: {
+//                 reason: "Bad Request", code: 400
+//             }
+//         });
+//     }
+// });
+
+/* !!! Created a new comment, including new replies. You should provide parent id in the body */
+app.post('/api/post/:id/comment', async (req, res) =>{
+    try{
+        if (!req.body.comment) {
+            return res.status(400).send({
+                ok: false,
+                error: {
+                    reason: "Expected a new comment object", code: 400
+                }
+            });
+        }
+        req.body.post.author = req.body.user._id; 
+        console.log(req.body.comment, 'commentOBJ ------------------\n\n') // ADD THIS
+        const newComment = await commentService.createComment(req.body.comment);
+        console.log(newComment);
+        res.data = {'comment': newComment};
+        return res.status(res.statusCode || 200)
+            .send({
+                ok: true,
+                response: res.data
+            });
+    } catch(err){
+        console.log(err);
+        return res.status(400).send({
+            ok: false,
+            err: {
+                reason: "Bad Request", code: 400
+            }
+        });
+    }
+});
+
+/* !!! Created a new comment, including new replies. You should provide parent id in the body */
+app.delete('/api/post/comment/:id', async (req, res) =>{
+    try{
+        if (!req.params.id) {
+            return res.status(400).send({
+                ok: false,
+                error: {
+                    reason: "No comment id", code: 400
+                }
+            });
+        }
+        const result = await commentService.deleteComment(req.params.id);
+        console.log('Comment deleted');
+        return res.status(res.statusCode || 200)
+            .send({
+                ok: result
+            });
+    } catch(err){
+        console.log(err);
+        return res.status(400).send({
+            ok: false,
+            err: {
+                reason: "Bad Request", code: 400
+            }
+        });
+    }
+});
+
 /* Used to make new posts
     Intended JSON to include in request: 
     {
@@ -54,6 +142,7 @@ const authentication = function(req, res, next){
 	    }
     }  
 */
+
 app.post('/api/posts/new', authentication, async (req, res) => {
     try{
         if (!req.body.post) {
