@@ -53,8 +53,8 @@ const Login = ({ dispatch, email, isLoggedIn }) => {
           />
         </div>
         <div>
-          <button class="button btn btn-danger btn-lg" onClick={() => verify()}>
-            Submit
+          <button class="button btn-lg" onClick={() => verify()}>
+            Log In
           </button>
         </div>
       </div>

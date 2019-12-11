@@ -83,6 +83,8 @@ input[type=password] {
 } 
 .button{
   margin-top: 10px;
+  background-color: rgb(153,0,0);
+  color: white;
 }
 
 .Note-card {
