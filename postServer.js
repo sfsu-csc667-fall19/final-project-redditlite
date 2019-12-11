@@ -74,7 +74,7 @@ const authentication = function(req, res, next){
 // });
 
 /* !!! Created a new comment, including new replies. You should provide parent id in the body */
-app.post('/api/post/:id/comment', async (req, res) =>{
+app.post('/api/post/:id/comment', authentication, async (req, res) =>{
     try{
         if (!req.body.comment) {
             return res.status(400).send({
@@ -106,7 +106,7 @@ app.post('/api/post/:id/comment', async (req, res) =>{
 });
 
 /* !!! Created a new comment, including new replies. You should provide parent id in the body */
-app.delete('/api/post/comment/:id', async (req, res) =>{
+app.delete('/api/post/comment/:id', authentication, async (req, res) =>{
     try{
         if (!req.params.id) {
             return res.status(400).send({
