@@ -1,6 +1,11 @@
-import axios from 'axios'
+// import axios from 'axios'
 
 import { listNotes } from './notesActions'
+
+export const setActiveUsers = activeUsers => ({
+  type: 'SET_ACTIVE_USERS',
+  activeUsers,
+})
 
 export const setEmail = email => ({
   type: 'SET_EMAIL',
@@ -18,19 +23,21 @@ export const setUsername = username => ({
 })
 
 export const registerUser = user => (dispatch, getState) => {
-  axios.post(`/api/auth/user/signup`, user, { withCredentials: true })
-    .then(res => {
-      console.log(res)
-      dispatch(setIsLoggedIn(true))
-    })
-    .catch(res => {
-      console.log(res)
-    })
+  // db code goes here
+  // axios.post(`/api/auth/user/signup`, user, { withCredentials: true })
+  //   .then(res => {
+  //     console.log(res)
+  //     dispatch(setIsLoggedIn(true))
+  //   })
+  //   .catch(res => {
+  //     console.log(res)
+  //   })
 }
 
 export const loginUser = user => (dispatch, getState) => {
   let cookiePW = user.user.password
   
+  // db code goes here
   // axios.post(`/api/auth/user/login`, user, { withCredentials: true })
   //   .then(res => {
   //     document.cookie = `email=${res.data.response.user.email}`
@@ -44,28 +51,6 @@ export const loginUser = user => (dispatch, getState) => {
   //   .catch(res => {
   //     console.log(res)
   //   })
-
-  // res is a user obj
-  let res = {
-    data: {
-      response: {
-        user: {
-          email: 'someone@example.com',
-          username: 'Someone'
-        }
-      }
-    }
-  }
-
-  // first then
-  document.cookie = `email=${res.data.response.user.email}`
-  document.cookie = `password=${cookiePW}`
-
-  dispatch(setUsername(res.data.response.user.username))
-  dispatch(setIsLoggedIn(true))
-
-  // second then
-  // dispatch(listNotes())
 }
 
 export const logoutUser = () => (dispatch, getState) => {

@@ -8,10 +8,10 @@ import {
 } from 'react-bootstrap'
 
 import {
-  addFirstComment, addSecondComment
+  addFirstComment, addSecondComment, loadPostContent
 } from '../redux/actions/notesActions'
 
-const PostPage = ({ dispatch, isLoggedIn, post, username }) => {
+const PostPage = ({ dispatch, isLoggedIn, post, username, notes }) => {
   const [firstReply, setFirstReply] = React.useState('')
   const [secondReply, setSecondReply] = React.useState('')
   const [showPost, setShowPost] = React.useState(false)
@@ -21,17 +21,17 @@ const PostPage = ({ dispatch, isLoggedIn, post, username }) => {
 
   let history = useHistory()
   let { id } = useParams()
-
+  
   React.useEffect(() => {
-    console.log(id)
-  }, [])
+    dispatch(loadPostContent(id))
+  }, [notes.length, id])
 
   if (!isLoggedIn) {
     setTimeout(() => {
       if (!isLoggedIn) {
         history.push('/')
       }
-    }, 1000)
+    }, 3000)
   }
 
   const handleFirstComment = firstReply => {
@@ -53,60 +53,63 @@ const PostPage = ({ dispatch, isLoggedIn, post, username }) => {
     <div hidden={ !isLoggedIn }>
       <br />
       <Container>
-        <div className="Post-card">
-            <h3>oisefoeiufpnes</h3>
-            <dir className="Post-signature">
-              By kejhf
-            </dir>
-            <p>
-              paifjepsirugjpaiuf
-            </p>
-            <div className="Post-toolbar">
-              <Container>
-                <Row>
-                  <Col md={ 10 }>
-                    <i className="material-icons md-14">forum</i>
-                    <b className="p-right">3 Comments</b>
-                  </Col>
+        { post.content && (
+            <div className="Post-card">
+              <h3>{ post.content.title }</h3>
+              <dir className="Post-signature">
+                By { post.content.author }
+              </dir>
+              <p>
+                { post.content.text }
+              </p>
+              <div className="Post-toolbar">
+                <Container>
+                  <Row>
+                    <Col md={ 10 }>
+                      <i className="material-icons md-14">forum</i>
+                      <b className="p-right">
+                        { post.content.num_comments } Comments
+                      </b>
+                    </Col>
 
-                  <Col>
-                    <Button
-                      variant="outline-secondary" size="small"
-                      onClick={ () => setShowPost(true) }
-                    >
-                      Comment
-                    </Button>
-                  </Col>
-                </Row>
-              </Container>
+                    <Col>
+                      <Button
+                        variant="outline-secondary" size="small"
+                        onClick={ () => setShowPost(true) }
+                      >
+                        Comment
+                      </Button>
+                    </Col>
+                  </Row>
+                </Container>
 
-              <Modal show={ showPost } onHide={ () => setShowPost(false) } centered>
-                <Modal.Header closeButton>
-                  <Modal.Title>Your Comment</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <InputGroup>
-                    <FormControl
-                      placeholder = "Your words here"
-                      as = "textarea"
-                      onChange={ e => setFirstReply(e.target.value) }
-                    />
-                  </InputGroup>
-                  
-                  <Modal.Footer>
-                    <Button
-                      variant="outline-secondary"
-                      onClick={ () => handleFirstComment(firstReply) }
-                    >
-                      Post
-                    </Button>
-                  </Modal.Footer>
-                </Modal.Body>
-              </Modal>
+                <Modal show={ showPost } onHide={ () => setShowPost(false) } centered>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Your Comment</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <InputGroup>
+                      <FormControl
+                        placeholder = "Your words here"
+                        as = "textarea"
+                        onChange={ e => setFirstReply(e.target.value) }
+                      />
+                    </InputGroup>
+                    
+                    <Modal.Footer>
+                      <Button
+                        variant="outline-secondary"
+                        onClick={ () => handleFirstComment(firstReply) }
+                      >
+                        Post
+                      </Button>
+                    </Modal.Footer>
+                  </Modal.Body>
+                </Modal>
+              </div>
             </div>
-         
-          
-        </div>
+          )
+        }
 
         {
           (post && post.comments) && post.comments.map((firstComment, fCindex) => (
@@ -179,7 +182,8 @@ const PostPage = ({ dispatch, isLoggedIn, post, username }) => {
 const mapStatetoProps = state => ({
   isLoggedIn: state.userReducer.isLoggedIn,
   post: state.notesReducer.post,
-  username: state.userReducer.username
+  username: state.userReducer.username,
+  notes: state.notesReducer.notes
 })
 
 export default connect(mapStatetoProps)(PostPage)

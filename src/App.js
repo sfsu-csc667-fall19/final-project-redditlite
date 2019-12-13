@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 
-import { Switch, Route, Redirect } from "react-router-dom"
+import { Switch, Route } from "react-router-dom"
 import { connect } from 'react-redux'
 
 import Login from './pages/Login'
@@ -9,11 +9,12 @@ import Dashboard from './pages/Dashboard'
 import Signup from './pages/Signup'
 import PostPage from './pages/PostPage'
 import CreatePost from './pages/CreatePost'
+import NaviBar from './pages/NaviBar'
+import LoadingPage from './pages/Loading'
 
 import { loginUser } from './redux/actions/userActions'
-import NaviBar from './pages/NaviBar'
 
-const App = ({ dispatch, isLoggedIn }) => {
+const App = ({ dispatch, loading }) => {
 
   React.useEffect(() => {
     let email = null
@@ -37,20 +38,28 @@ const App = ({ dispatch, isLoggedIn }) => {
   return (
     <div className="App">
       <NaviBar />
-      
-      <Switch>
-        <Route path="/signup" component={ Signup } />
-        <Route path="/dashboard" component={ Dashboard } />
-        <Route path="/post/create" component={ CreatePost } />
-        <Route path="/post/:id" component={ PostPage } />
-        <Route path="/" component={ Login } />
-      </Switch>
+      {
+        loading && (
+          <LoadingPage />
+        )
+      }
+      {
+        !loading && (
+          <Switch>
+            <Route path="/signup" component={ Signup } />
+            <Route path="/dashboard" component={ Dashboard } />
+            <Route path="/post/create" component={ CreatePost } />
+            <Route path="/post/:id" component={ PostPage } />
+            <Route path="/" component={ Login } />
+          </Switch>
+        )
+      }
     </div>
-  );
+  )
 }
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.userReducer.isLoggedIn,
+  loading: state.notesReducer.loading
 })
 
 export default connect(mapStateToProps)(App);

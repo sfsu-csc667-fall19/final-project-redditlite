@@ -1,21 +1,34 @@
-import axios from 'axios';
+// import axios from 'axios'
 
-// TODO: look up to db to get all the associated data
-export const setPostId = _id => ({
-  type: 'SET_POST_ID',
-  postId: _id
+export const resetApp = () => (dispatch, getState) => {
+  dispatch(listNotes())
+}
+
+export const loadPostContent = id => (dispatch, getState) => {
+  let post = {}
+  // db code goes here
+}
+
+const reducePostComments = post => ({
+  type: 'POST_COMMENTS',
+  post
 })
 
-export const createNewPost = (title, description, username) => ({
+export const createNewPost = (
+  title, description, username
+) => (dispatch, getState) => {
+  dispatch(reduceLoading(true))
+  // db code goes here
+}
+
+const reduceCreateNewPost = post => ({
   type: 'CREATE_NEW_POST',
-  post: {
-    _id: 'some_id',
-    title: title,
-    text: description,
-    author: username,
-    num_comments: 0,
-    _createdAt: Date(Date.now())
-  }
+  post
+})
+
+const reduceLoading = loading => ({
+  type: 'LOADING',
+  loading
 })
 
 export const addFirstComment = (comment, username) => ({
@@ -41,54 +54,19 @@ export const addSecondComment = (comment, index, username) => ({
   index
 })
 
+export const listNotes = () => (dispatch, getState) => {
+  dispatch(reduceLoading(true))
+  // db code goes here
+  // axios.get('/api/notes/all', { withCredentials: true })
+  //   .then(res => {
+  //     dispatch(setNotes(res.data.response.notes))
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
+}
+
 const setNotes = notes => ({
   type: 'NOTES_SET_NOTES',
   notes
 })
-
-export const listNotes = () => (dispatch, getState) => {
-  axios.get('/api/notes/all', { withCredentials: true })
-    .then(res => {
-      dispatch(setNotes(res.data.response.notes))
-      dispatch(setnewNote(''))
-    })
-    .catch(err => {
-      console.log(err)
-    })
-};
-
-export const setnewNote = newNote => ({
-  type: 'NOTES_SET_NEW_NOTE',
-  newNote
-})
-
-export const createNewNote = () => (dispatch, getState) => {
-  let { newNote } = getState().notesReducer
-
-  axios.post('/api/notes/new', {
-    note: {
-      content: newNote
-    }
-  }, { withCredentials: true })
-    .then(res => dispatch(listNotes()))
-    .catch(err => {
-      console.log(err)
-    })
-}
-
-export const editNote = note => (dispatch, getState) => {
-  axios.post('/api/notes/edit', note, { withCredentials: true })
-    .then(res => dispatch(listNotes()))
-    .catch(err => {
-      console.log(err)
-    })
-}
-
-export const countView = _id => (dispatch, getState) => {
-  axios.get(`/api/notes/note/${_id}`, { withCredentials: true })
-    .then(res => {
-    })
-    .catch(err => {
-      console.log(err)
-    })
-}

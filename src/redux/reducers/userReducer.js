@@ -1,4 +1,5 @@
 const INITIAL_STATE = {
+  activeUsers: 0,
   email: '',
   username: '',
   isLoggedIn: false
@@ -8,6 +9,11 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, action) => {
   // Step 3 create switch for action types
   switch (action.type) {
+    case 'SET_ACTIVE_USERS':
+      return {
+        ...state,
+        activeUsers: action.activeUsers
+      }
     case 'SET_IS_LOGGED_IN':
       if (!action.isLoggedIn) {
         document.cookie = 'auth=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'

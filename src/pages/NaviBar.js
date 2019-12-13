@@ -1,7 +1,7 @@
 import React from "react"
 
 import {
-  Navbar, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown,
+  Navbar, NavbarBrand, Nav, UncontrolledDropdown,
   DropdownToggle, DropdownMenu, DropdownItem, Button
 } from "reactstrap"
 
@@ -9,12 +9,15 @@ import { useHistory } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { logoutUser } from '../redux/actions/userActions'
-import { getJSDocParameterTags } from "typescript"
 
-const NaviBar = ({ dispatch, username, email, isLoggedIn }) => {
+const NaviBar = ({ dispatch, username, isLoggedIn, activeUsers, email }) => {
   let history = useHistory()
 
   const accountLogOut = () => {
+    window.ws.send(JSON.stringify({
+      type: 'LOGGED_OUT',
+      email
+    }))
     dispatch(logoutUser())
     history.push('/')
   }
@@ -32,7 +35,7 @@ const NaviBar = ({ dispatch, username, email, isLoggedIn }) => {
       <Navbar className='nav' fixed="top">
         <div className="pointer">
           <NavbarBrand id="brand" onClick={ () => goHome() }>
-            Reddit-Lite
+            Reddit-Lite (Online { activeUsers })
           </NavbarBrand>
         </div>
 
@@ -63,9 +66,10 @@ const NaviBar = ({ dispatch, username, email, isLoggedIn }) => {
 }
 
 const mapStateToProps = state => ({
-  email: state.userReducer.email,
   username: state.userReducer.username,
-  isLoggedIn: state.userReducer.isLoggedIn
+  isLoggedIn: state.userReducer.isLoggedIn,
+  activeUsers: state.userReducer.activeUsers,
+  email: state.userReducer.email
 })
 
 export default connect(mapStateToProps)(NaviBar);

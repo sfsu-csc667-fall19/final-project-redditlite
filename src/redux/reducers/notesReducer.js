@@ -1,107 +1,24 @@
 const DEFAULT_STATE = {
-  // notes: [], // default
-  notes: [
-    {
-      _id: 'first_uuid',
-      title: 'first one',
-      text: 'like father like son',
-      author: 'monbo',
-      num_comments: '60k',
-      _createdAt: 'Date.now()'
-    },
-    {
-      _id: 'second_uuid',
-      title: 'second one',
-      text: 'sword is mighter than a knife?',
-      author: 'jumbo',
-      num_comments: '10k',
-      _createdAt: 'Date.now()',
-    },
-    {
-      _id: '3rd_uuid',
-      title: 'third one',
-      text: 'something something dark side',
-      author: 'trash',
-      num_comments: '30k',
-      _createdAt: 'Date.now()'
-    },
-    {
-      _id: '4th_uuid',
-      title: 'fourth one',
-      text: 'good from far but far from good',
-      author: 'robo',
-      num_comments: '69k',
-      _createdAt: 'Date.now()'
-    },
-    {
-      _id: '5th_uuid',
-      title: 'fifth one',
-      text: 'heroes are born not made',
-      author: 'cliche',
-      num_comments: '1337k',
-      _createdAt: 'Date.now()'
-    }
-  ], // default
+  loading: false,
+  notes: [], // default
   post: {
-    // you will inject the data of the one u clicked on here
-    comments: [
-      {
-        text: 'lick me good',
-        author: 'troll',
-        parent: null,
-        comments: [],
-        _createdAt: "Date.now()"
-      },
-      {
-        text: 'gloria',
-        author: 'llort',
-        parent: null,
-        comments: [
-          {
-            text: 'sub com 0',
-            author: 'com0',
-            parent: 'some_uuid_which_does_not_concern_us',
-            comments: [], // will always be empty
-            _createdAt: "Date.now()"
-          }
-        ],
-        _createdAt: "Date.now()"
-      },
-      {
-        text: 'airolg',
-        author: 'roll',
-        parent: null,
-        comments: [],
-        _createdAt: "Date.now()"
-      },
-      {
-        text: 'doog em kcil',
-        author: 'llor',
-        parent: null,
-        comments: [
-          {
-            text: 'sub com 0',
-            author: 'com0',
-            parent: 'some_uuid_which_does_not_concern_us',
-            comments: [], // will always be empty
-            _createdAt: "Date.now()"
-          },
-          {
-            text: 'sub com 1',
-            author: 'com1',
-            parent: 'some_uuid_which_does_not_concern_us',
-            comments: [], // will always be empty
-            _createdAt: "Date.now()"
-          }
-        ],
-        _createdAt: "Date.now()"
-      }
-    ]
+    content: {},
+    comments: []
   }
 }
 
 const notesReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
+    case 'LOADING':
+      return {
+        ...state,
+        loading: action.loading
+      }
+    case 'POST_COMMENTS':
+      return {
+        ...state,
+        post: action.post
+      }
     case 'CREATE_NEW_POST':
       state.notes.push(action.post)
       return {
@@ -109,18 +26,35 @@ const notesReducer = (state = DEFAULT_STATE, action) => {
       }
     case 'ADD_FIRST_LAYER_COMMENT':
       state.post.comments.push(action.comment)
+      state.post.content.num_comments = state.post.content.num_comments + 1
+      
+      // db code goes here
+
+      window.ws.send(JSON.stringify({
+        type: 'SEND_MESSAGE'
+      }))
       return {
-        ...state
+        ...state,
+        post: {
+          content: state.post.content,
+          comments: state.post.comments
+        }
       }
     case 'ADD_SECOND_LAYER_COMMENT':
       state.post.comments[action.index].comments.push(action.comment)
-      return {
-        ...state
-      }
-    case 'NOTES_SET_NEW_NOTE':
+      state.post.content.num_comments = state.post.content.num_comments + 1
+      
+      // db code goes here
+
+      window.ws.send(JSON.stringify({
+        type: 'SEND_MESSAGE'
+      }))
       return {
         ...state,
-        newNote: action.newNote
+        post: {
+          content: state.post.content,
+          comments: state.post.comments
+        }
       }
     case 'NOTES_SET_NOTES':
       return {
@@ -130,6 +64,6 @@ const notesReducer = (state = DEFAULT_STATE, action) => {
     default:
       return state;
   }
-};
+}
 
-export default notesReducer;
+export default notesReducer
