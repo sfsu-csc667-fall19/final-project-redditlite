@@ -1,21 +1,21 @@
 module.exports = {
   apps: [
-    // {
-    //   name: "notesServer",
-    //   script: "./noteServer.js",
-    //   watch: true,
-    //   instances: 2,
-    //   exec_mode: "cluster",
-    //   ignore_watch : ["node_modules"],
-    //   watch: true,
-    // },
-    // {
-    //   name: "authServer",
-    //   script: "./authServer.js",
-    //   watch: true,
-    //   ignore_watch : ["node_modules"],
-    //   watch: true,
-    // },
+    {
+      name: "postServer",
+      script: "./postServer.js",
+      watch: true,
+      instances: 2,
+      exec_mode: "cluster",
+      ignore_watch : ["node_modules"],
+      watch: true,
+    },
+    {
+      name: "authServer",
+      script: "./authServer.js",
+      watch: true,
+      ignore_watch : ["node_modules"],
+      watch: true,
+    },
     {
       name: "socket",
       script: "./websocketServer.js",

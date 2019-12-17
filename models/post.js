@@ -13,7 +13,7 @@ var postSchema = new mongoose.Schema({
         ref: 'user',
         required: true
     },
-    views: {
+    num_comments: {
         type: Number,
         default: 0,
         required: true

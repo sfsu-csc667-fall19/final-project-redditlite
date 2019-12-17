@@ -18,7 +18,7 @@ const authentication = function(req, res, next){
     console.log(httpMethod, apiUrl);
 
     axios('http://localhost:3000/api/auth/verify', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             cookie: req.headers.cookie
         }
@@ -47,6 +47,45 @@ const authentication = function(req, res, next){
     })
 };
 
+
+
+
+/** 
+ * Query posts that are sorted in a certain way.
+ * No authentication needed to use this endpoint
+ * 
+ * to get sorted by num_comments with a limit of 10 post:
+ * /api/post/sorted?by=num_comments&order=desc&limit=1
+ * 
+ * 
+ * can have an optional query parameter 'limit' which is a number.
+ */
+app.get('/api/post/sorted', async (req, res, next)=> {
+    try {
+        if (req.query && req.query.by && req.query.order && req.query.limit) {
+            const by = req.query.by,                    // field to sort by
+               order = req.query.order=='desc'? -1 : 1, // asc or desc
+               limit = parseInt(req.query.limit);       // output limit 
+
+           res.data = await postService.getSorted(by, order, limit);
+        } else {
+            res.data =  await postService.getSorted();
+        }
+
+        handle200Response(req, res);
+
+    } catch (error) {
+        return res.status(400).send({
+            ok: false,
+            error: {
+                reason: "Bad Request", code: 400
+            }
+        });
+    }
+});
+
+
+
 /* Used to make new posts
     Intended JSON to include in request: 
     {
@@ -59,19 +98,19 @@ const authentication = function(req, res, next){
 
 // comments on post - get post id 
 /* !!! Get post by id */
-app.get('/api/post/:id', async (req, res, next) =>{
+app.get('/api/post/:id/comments', authentication, async (req, res, next) =>{
     try {
         if (!req.params.id) {
             return res.status(400).send({
                 ok: false,
                 error: {
-                    reason: "No id provided", code: 400
+                    reason: "Post id required!", code: 400
                 }
             });
         }
-        console.log(req.params.id)
-        const post = await postService.findPostById(req.param.id);
-        res.data = { post:  post};
+
+        const post = await commentService.getComments(req.params.id);
+        res.data = {post};
         handle200Response(req, res);
     } catch (error) {
         console.log("ERRORED /api/notes/all", error);
@@ -84,39 +123,42 @@ app.get('/api/post/:id', async (req, res, next) =>{
     }
 });
 
-/* !!! Created a new comment, including new replies. You should provide parent id in the body */
-app.post('/api/post/:id/comment', async (req, res) =>{
+/* create new comment */
+app.post('/api/post/new/comment', authentication, async (req, res) =>{
     try{
-        if (!req.body.comment) {
+        if (!req.body.comment || ! req.body.comment.post) {
             return res.status(400).send({
                 ok: false,
                 error: {
-                    reason: "Expected a new comment object", code: 400
+                    reason: "Expected a new comment object with correct fields", code: 400
                 }
             });
         }
-        req.body.post.author = req.body.user._id; 
-        console.log(req.body.comment, 'commentOBJ ------------------\n\n') // ADD THIS
+
+        if (!req.body.comment.author) {
+            req.body.comment.author = req.user._id; 
+        }
+         
         const newComment = await commentService.createComment(req.body.comment);
-        console.log(newComment);
+        
+        const postId = typeof req.body.comment.post === 'string'? req.body.comment.post : req.body.comment.post._id;
+        await postService.incrementNumComments(postId)
+
         res.data = {'comment': newComment};
-        return res.status(res.statusCode || 200)
-            .send({
-                ok: true,
-                response: res.data
-            });
+        
+        handle200Response(req, res);
     } catch(err){
         console.log(err);
         return res.status(400).send({
             ok: false,
             err: {
-                reason: "Bad Request", code: 400
+                reason: "Bad Request", code: 400, error: err
             }
         });
     }
 });
 
-/* !!! Created a new comment, including new replies. You should provide parent id in the body */
+/* You should provide parent id in the body */
 app.delete('/api/post/comment/:id', async (req, res) =>{
     try{
         if (!req.params.id) {
@@ -128,7 +170,6 @@ app.delete('/api/post/comment/:id', async (req, res) =>{
             });
         }
         const result = await commentService.deleteComment(req.params.id);
-        console.log('Comment deleted');
         return res.status(res.statusCode || 200)
             .send({
                 ok: result
@@ -144,7 +185,7 @@ app.delete('/api/post/comment/:id', async (req, res) =>{
     }
 });
 
-app.post('/api/posts/new', /*authentication,*/ async (req, res) => {
+app.post('/api/post/new', authentication, async (req, res) => {
     try{
         if (!req.body.post) {
             return res.status(400).send({
@@ -154,10 +195,8 @@ app.post('/api/posts/new', /*authentication,*/ async (req, res) => {
                 }
             });
         }
-        req.body.post.author = req.body.user._id; 
-        console.log(req.body.post, 'postOBJ ------------------\n\n') // ADD THIS
+        req.body.post.author = req.user._id; 
         const newPost = await postService.createPost(req.body.post);
-        console.log(newPost);
         res.data = {'post': newPost};
         return res.status(res.statusCode || 200)
             .send({
@@ -179,12 +218,13 @@ app.post('/api/posts/new', /*authentication,*/ async (req, res) => {
 Intended JSON to include in request: 
     {
 	"post": {
+        "_id": "someID"
 		"title": "Post_Name",
 		"text": "Post_Body"
 	    }
     } 
 */
-app.post('/api/posts/edit', authentication, async (req, res) => {
+app.post('/api/post/edit', authentication, async (req, res) => {
     try{
         if (!req.body.post) {
             return res.status(400).send({
@@ -196,7 +236,6 @@ app.post('/api/posts/edit', authentication, async (req, res) => {
         }
         
         const updatedPost = await postService.updatePost(req.body.post);
-        console.log(updatedPost);
         res.data = {'post': updatedPost};
 
         return res.status(res.statusCode || 200)
@@ -228,5 +267,12 @@ app.all('*', (req, res, next) => {
     }
 });
 
+
+
+/** HELPER FUNCTION */
+const handle200Response = (req, res) => {
+    res.status(res.statusCode || 200)
+        .send({ ok: true, response: res.data });
+}
 
 app.listen(port, () => console.log(`PostServer listening on port ${port}!`))

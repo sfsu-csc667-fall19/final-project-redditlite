@@ -36,21 +36,21 @@ appServer.on('upgrade', (req, socket, head) => {
   wsProxy.ws(req, socket, head);
 });
 
-// app.all("/api/auth/*", (req, res) => {
-//   // service1
-//   console.log(req.path)
-//   apiProxy.web(req, res, {
-//     target: 'http://localhost:3000',
-//   });
-// });
+app.all("/api/auth/*", (req, res) => {
+  // service1
+  console.log(req.path)
+  apiProxy.web(req, res, {
+    target: 'http://localhost:3000',
+  });
+});
 
-// app.all("/api/posts/*", (req, res) => {
-//   // service2
-//   console.log(req.path)
-//   apiProxy.web(req, res, {
-//     target: 'http://localhost:3001',
-//   });
-// });
+app.all("/api/post/*", (req, res) => {
+  // service2
+  console.log(req.path)
+  apiProxy.web(req, res, {
+    target: 'http://localhost:3001',
+  });
+});
 
 app.all("*", (req, res) => {
   // front end server / react
