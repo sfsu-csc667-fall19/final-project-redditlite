@@ -27,4 +27,4 @@ const Consumer = kafka.Consumer,
     });
 
 
-app.listen(port, () => console.log(`Kafka producer running on port ${port}!`));
+app.listen(port, () => console.log(`Kafka consumer running on port ${port}!`));
