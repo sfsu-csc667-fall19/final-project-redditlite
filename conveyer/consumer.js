@@ -1,5 +1,6 @@
 const app = require('express')();
 const kafka = require('kafka-node');
+const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const port = 5002;
@@ -16,6 +17,13 @@ const Consumer = kafka.Consumer,
 
     consumer.on('message', function(message) {
         console.log(message);
+        axios.post('/api/post/new/', message)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     });
 
     consumer.on('error', function(err) {

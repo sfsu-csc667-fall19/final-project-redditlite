@@ -24,14 +24,21 @@ app.get('/', function(req, res){
     res.json({greeting:'Kafka Consumer'});
 });
 
-app.post('/sendMsg', function(req, res){
+app.post('/api/post/new', function(req, res){
     //var sentMessage = JSON.stringify(req.body);
+
+    const data = {
+        body: req.body,
+        user: req.user,
+        headers: req.headers
+    };
+
     const payloads = [
-        {topic: 'Posts', messages: JSON.stringify(req.body), partition: 0}
+        {topic: 'Posts', messages: JSON.stringify(data), partition: 0}
     ];
     producer.send(payloads, function(err, data){
         res.json(data);
     });
-})
+});
 
 app.listen(port, () => console.log(`Kafka producer running on port ${port}!`));
