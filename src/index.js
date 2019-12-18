@@ -14,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 
 import { setActiveUsers } from './redux/actions/userActions'
-import { resetApp } from './redux/actions/notesActions'
+// import { resetApp } from './redux/actions/notesActions'
 
 const ws = new WebSocket('ws://' + window.location.host.split(':')[0] + (window.location.port && `:${window.location.port}`) + '/websocket');
 
@@ -36,7 +36,7 @@ ws.onmessage = (message) => {
       store.dispatch(setActiveUsers(messageObject.count))
       break
     case 'UPDATE_MESSAGES':
-      store.dispatch(resetApp())
+      // store.dispatch(resetApp())
       break
     default:
       return

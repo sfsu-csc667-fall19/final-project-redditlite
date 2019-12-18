@@ -1,4 +1,4 @@
-// import axios from 'axios'
+import axios from 'axios'
 
 import { listNotes } from './notesActions'
 
@@ -23,48 +23,46 @@ export const setUsername = username => ({
 })
 
 export const registerUser = user => (dispatch, getState) => {
-  // db code goes here
-  // axios.post(`/api/auth/user/signup`, user, { withCredentials: true })
-  //   .then(res => {
-  //     console.log(res)
-  //     dispatch(setIsLoggedIn(true))
-  //   })
-  //   .catch(res => {
-  //     console.log(res)
-  //   })
+  axios.post(`/api/auth/user/signup`, user, { withCredentials: true })
+    .then(res => {
+      console.log(res)
+      dispatch(setIsLoggedIn(true))
+    })
+    .catch(res => {
+      console.log(res)
+    })
 }
 
 export const loginUser = user => (dispatch, getState) => {
   let cookiePW = user.user.password
-  
-  // db code goes here
-  // axios.post(`/api/auth/user/login`, user, { withCredentials: true })
-  //   .then(res => {
-  //     document.cookie = `email=${res.data.response.user.email}`
-  //     document.cookie = `password=${cookiePW}`
 
-  //     dispatch(setUsername(res.data.response.user.username))
-  //     dispatch(setIsLoggedIn(true))
-  //     return
-  //   })
-  //   .then(() => dispatch(listNotes()))
-  //   .catch(res => {
-  //     console.log(res)
-  //   })
+  axios.post(`/api/auth/user/login`, user, { withCredentials: true })
+    .then(res => {
+      document.cookie = `email=${res.data.response.user.email}`
+      document.cookie = `password=${cookiePW}`
+
+      dispatch(setUsername(res.data.response.user.username))
+      dispatch(setIsLoggedIn(true))
+      return
+    })
+    .then(() => {
+      dispatch(listNotes())
+      return
+    })
+    .catch(res => {
+      alert('Email and password combination does not exist!')
+      console.log(res)
+    })
 }
 
 export const logoutUser = () => (dispatch, getState) => {
-  // axios.post(`api/auth/user/logout`, {}, { withCredentials: true })
-  //   .then(res => {
-  //     dispatch(setEmail(''))
-  //     dispatch(setUsername(''))
-  //     dispatch(setIsLoggedIn(false))
-  //   })
-  //   .catch(res => {
-  //     console.log(res)
-  //   })
-
-  dispatch(setEmail(''))
-  dispatch(setUsername(''))
-  dispatch(setIsLoggedIn(false))
+  axios.post(`api/auth/user/logout`, {}, { withCredentials: true })
+    .then(res => {
+      dispatch(setEmail(''))
+      dispatch(setUsername(''))
+      dispatch(setIsLoggedIn(false))
+    })
+    .catch(res => {
+      console.log(res)
+    })
 }

@@ -27,7 +27,7 @@ const Dashboard = ({ dispatch, notes, isLoggedIn }) => {
                 <Col>
                   <Card
                     className="pointer"
-                    onClick={() => renderPost(note, ind) }
+                    onClick={ () => renderPost(note, ind) }
                   >
                     <Card.Body className="text-left">
                       <Card.Title>
@@ -35,8 +35,8 @@ const Dashboard = ({ dispatch, notes, isLoggedIn }) => {
                       </Card.Title>
 
                       <Card.Text>
-                        submitted at { note._createdAt } by{' '}
-                        { note.author }
+                        submitted at { note._createdAt } by
+                        { ` ${note.author.username}` }
                       </Card.Text>
 
                       <footer className="blockquote-footer">

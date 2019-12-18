@@ -1,12 +1,20 @@
-// import axios from 'axios'
+import axios from 'axios'
 
 export const resetApp = () => (dispatch, getState) => {
-  dispatch(listNotes())
+  // last step
+  // dispatch(listNotes())
 }
 
 export const loadPostContent = id => (dispatch, getState) => {
   let post = {}
   // db code goes here
+  // axios.get('/api/notes/all', { withCredentials: true })
+  //   .then(res => {
+  //     dispatch(setNotes(res.data.response.notes))
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
 }
 
 const reducePostComments = post => ({
@@ -18,7 +26,19 @@ export const createNewPost = (
   title, description, username
 ) => (dispatch, getState) => {
   dispatch(reduceLoading(true))
-  // db code goes here
+  let body = {
+    post: { title, text: description }
+  }
+
+  axios.post('/api/post/new', body, { withCredentials: true })
+    .then(res => {
+      dispatch(reduceCreateNewPost(res.data.response.post))
+      dispatch(reduceLoading(false))
+      return
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 const reduceCreateNewPost = post => ({
@@ -56,14 +76,16 @@ export const addSecondComment = (comment, index, username) => ({
 
 export const listNotes = () => (dispatch, getState) => {
   dispatch(reduceLoading(true))
-  // db code goes here
-  // axios.get('/api/notes/all', { withCredentials: true })
-  //   .then(res => {
-  //     dispatch(setNotes(res.data.response.notes))
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
+
+  axios.get('/api/post/sorted', { withCredentials: true })
+    .then(res => {
+      dispatch(setNotes(res.data.response))
+      dispatch(reduceLoading(false))
+      return
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 const setNotes = notes => ({
