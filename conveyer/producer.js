@@ -24,7 +24,7 @@ app.get('/', function(req, res){
     res.json({greeting:'Kafka Consumer'});
 });
 
-app.post('/api/post/new', function(req, res){
+app.post('/conveyer/post/new', function(req, res){
     //var sentMessage = JSON.stringify(req.body);
 
     const data = {
