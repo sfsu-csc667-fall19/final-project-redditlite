@@ -31,6 +31,8 @@
     "ws": "^7.2.0"
   },
   "scripts": {
+    "deploy": "pm2 start process.config.js",
+    "deploy:watch": "npm run deploy && sudo pm2 logs",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
