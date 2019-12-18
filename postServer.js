@@ -254,6 +254,129 @@ app.post('/api/post/edit', authentication, async (req, res) => {
     }
 });
 
+/*
+Finds all posts with the properties included, returns an array of post objects
+Intended JSON to include in request: 
+{
+	"post": {
+		"title": Post_Name,
+        "text": Post_Body,
+        "author": Author_ID,
+        "_createdAt": Date
+	    }
+} 
+*/
+
+app.post('/api/posts/findposts', async (req, res) => {
+    try{
+        if (!req.body.post){
+            return res.status(400).send({
+                ok: false,
+                error: {
+                    reason: "No postObj provided", code: 400
+                }
+            });
+        }
+
+        const postResults = await postService.findAllPost(req.body.post);
+        console.log(postResults);
+        res.data = {'posts': postResults};
+
+        return res.status(res.statusCode || 200)
+            .send({
+                ok: true,
+                response: res.data
+            });
+    } catch(err){
+        console.log(err);
+        return res.status(400).send({
+            ok: false,
+            err: {
+                reason: "Bad Request", code: 400
+            }
+        });
+    }
+});
+
+/*
+Finds one post with the properties included, returns a post object
+Intended JSON to include in request: 
+{
+	"post": {
+		"title": Post_Name,
+        "text": Post_Body,
+        "author": Author_ID,
+        "_createdAt": Date
+	    }
+} 
+*/
+
+app.post('/api/posts/findpost', async (req, res) => {
+    try{
+        if (!req.body.post){
+            return res.status(400).send({
+                ok: false,
+                error: {
+                    reason: "No postObj provided", code: 400
+                }
+            });
+        }
+
+        const postResult = await postService.findOnePost(req.body.post);
+        console.log(postResult);
+        res.data = {'post': postResult};
+
+        return res.status(res.statusCode || 200)
+            .send({
+                ok: true,
+                response: res.data
+            });
+    } catch(err){
+        console.log(err);
+        return res.status(400).send({
+            ok: false,
+            err: {
+                reason: "Bad Request", code: 400
+            }
+        });
+    }
+});
+
+/*
+Finds one post with the postID included, returns a post object
+Include postID as parameter in get request
+*/
+
+app.get('/api/posts/getpost/:id', async (req, res) => {
+    try{
+        if (!req.params.id){
+            return res.status(400).send({
+                ok: false,
+                error: {
+                    reason: "No postID provided", code: 400
+                }
+            });
+        }
+        console.log(req.params.id)
+        let postResult = await postService.getPostById(req.params.id);
+        res.data = {'post': postResult};
+
+        return res.status(res.statusCode || 200)
+            .send({
+                ok: true,
+                response: res.data
+            });
+    } catch(err){
+        console.log(err);
+        return res.status(400).send({
+            ok: false,
+            err: {
+                reason: "Bad Request", code: 400
+            }
+        });
+    }
+});
+
 // Block other endpoints
 app.all('*', (req, res, next) => {
     if (!req.session || !req.sessionId) {
