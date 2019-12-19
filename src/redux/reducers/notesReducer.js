@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const DEFAULT_STATE = {
   loading: false,
   notes: [], // default
@@ -28,11 +30,24 @@ const notesReducer = (state = DEFAULT_STATE, action) => {
       state.post.comments.push(action.comment)
       state.post.content.num_comments = state.post.content.num_comments + 1
       
-      // db code goes here
+      let body = {
+        comment: {
+          text: action.comment.text,
+          post: action.comment.post
+        }
+      }
 
-      window.ws.send(JSON.stringify({
-        type: 'SEND_MESSAGE'
-      }))
+      axios.post('/api/post/new/comment', body, { withCredentials: true })
+        .then(() => {
+          return
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      // TODO:
+      // window.ws.send(JSON.stringify({
+      //   type: 'SEND_MESSAGE'
+      // }))
       return {
         ...state,
         post: {
@@ -41,14 +56,30 @@ const notesReducer = (state = DEFAULT_STATE, action) => {
         }
       }
     case 'ADD_SECOND_LAYER_COMMENT':
+      state.post.comments[action.index].comments = state.post.comments[action.index].comments || []
       state.post.comments[action.index].comments.push(action.comment)
       state.post.content.num_comments = state.post.content.num_comments + 1
-      
-      // db code goes here
 
-      window.ws.send(JSON.stringify({
-        type: 'SEND_MESSAGE'
-      }))
+      let body0 = {
+        comment: {
+          text: action.comment.text,
+          post: action.comment.post,
+          parent: state.post.comments[action.index]._id
+        }
+      }
+
+      axios.post('/api/post/new/comment', body0, { withCredentials: true })
+        .then(() => {
+          return
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+      // TODO:
+      // window.ws.send(JSON.stringify({
+      //   type: 'SEND_MESSAGE'
+      // }))
       return {
         ...state,
         post: {

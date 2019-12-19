@@ -28,11 +28,13 @@ const App = ({ dispatch, loading }) => {
       }
     })
 
-    if (email) {
-      dispatch(loginUser({
-        user: { email, password }
-      }))
-    }
+    setTimeout(() => {
+      if (email) {
+        dispatch(loginUser({
+          user: { email, password }
+        }))
+      }
+    }, 500)
   }, []); // VERY IMPORTANT NEEDS THE EMPTY ARRAY
 
   return (

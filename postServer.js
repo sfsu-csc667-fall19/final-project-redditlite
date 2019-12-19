@@ -311,9 +311,9 @@ Intended JSON to include in request:
 } 
 */
 
-app.post('/api/posts/findpost', async (req, res) => {
+app.post('/api/post/findpost', async (req, res) => {
     try{
-        if (!req.body.post){
+        if (!req.body.post) {
             return res.status(400).send({
                 ok: false,
                 error: {

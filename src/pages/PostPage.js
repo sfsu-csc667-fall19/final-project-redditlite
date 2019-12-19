@@ -35,7 +35,7 @@ const PostPage = ({ dispatch, isLoggedIn, post, username, notes }) => {
   }
 
   const handleFirstComment = firstReply => {
-    dispatch(addFirstComment(firstReply, username))
+    dispatch(addFirstComment(firstReply, username, id))
     setShowPost(false)
   }
 
@@ -44,10 +44,12 @@ const PostPage = ({ dispatch, isLoggedIn, post, username, notes }) => {
     setShow(true)
   }
 
-  const handleSecondComment = secondComment => {
-    dispatch(addSecondComment(secondComment, parentIndex, username))
+  const handleSecondComment = (secondComment) => {
+    dispatch(addSecondComment(secondComment, parentIndex, username, id))
     setShow(false)
   }
+
+  console.log(post)
 
   return (
     <div hidden={ !isLoggedIn }>
@@ -57,7 +59,7 @@ const PostPage = ({ dispatch, isLoggedIn, post, username, notes }) => {
             <div className="Post-card">
               <h3>{ post.content.title }</h3>
               <dir className="Post-signature">
-                By { post.content.author }
+                By { post.content.author ? post.content.author.username : '' }
               </dir>
               <p>
                 { post.content.text }
@@ -119,7 +121,7 @@ const PostPage = ({ dispatch, isLoggedIn, post, username, notes }) => {
                 <Container>
                   <Row>
                     <Col md={ 10 }>
-                      By { firstComment.author } at { firstComment._createdAt }
+                      By { firstComment.author ? firstComment.author.username : ' ' } at { firstComment._createdAt }
                     </Col>
                     <Col>
                       <Button
@@ -150,7 +152,7 @@ const PostPage = ({ dispatch, isLoggedIn, post, username, notes }) => {
                         style={{ "align": "right" }}
                         variant="outline-secondary" type="sm"
                         onClick={
-                          () => handleSecondComment(secondReply)
+                          () => handleSecondComment(secondReply, firstComment._id)
                         }
                       >
                         Submit
@@ -165,7 +167,7 @@ const PostPage = ({ dispatch, isLoggedIn, post, username, notes }) => {
                   <dir className="Comment-card" key={ sCindex }>
                     { secondComment.text } <br />
                     <dir className="Post-signature">
-                      By { secondComment.author } at { secondComment._createdAt }
+                      By { secondComment.author ? secondComment.author.username : ' ' } at { secondComment._createdAt }
                     </dir>
 
                   </dir>

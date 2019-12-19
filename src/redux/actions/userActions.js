@@ -25,8 +25,13 @@ export const setUsername = username => ({
 export const registerUser = user => (dispatch, getState) => {
   axios.post(`/api/auth/user/signup`, user, { withCredentials: true })
     .then(res => {
-      console.log(res)
+      window.ws.send(JSON.stringify({
+        type: 'LOGGED_IN',
+        email: user.user.email
+      }))
+
       dispatch(setIsLoggedIn(true))
+      return
     })
     .catch(res => {
       console.log(res)
@@ -40,6 +45,11 @@ export const loginUser = user => (dispatch, getState) => {
     .then(res => {
       document.cookie = `email=${res.data.response.user.email}`
       document.cookie = `password=${cookiePW}`
+
+      window.ws.send(JSON.stringify({
+        type: 'LOGGED_IN',
+        email: user.user.email
+      }))
 
       dispatch(setUsername(res.data.response.user.username))
       dispatch(setIsLoggedIn(true))

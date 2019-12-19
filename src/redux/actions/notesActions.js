@@ -7,14 +7,25 @@ export const resetApp = () => (dispatch, getState) => {
 
 export const loadPostContent = id => (dispatch, getState) => {
   let post = {}
-  // db code goes here
-  // axios.get('/api/notes/all', { withCredentials: true })
-  //   .then(res => {
-  //     dispatch(setNotes(res.data.response.notes))
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
+  let path = `/api/post/findpost`
+  let body = {
+    post: { _id: id }
+  }
+
+  axios.post(path, body, { withCredentials: true })
+    .then(res => {
+      post.content = res.data.response.post
+
+      return axios.get(`/api/post/${id}/comments`)
+    }).then(res => {
+      post.comments = res.data.response.post
+
+      dispatch(reducePostComments(post))
+      return
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 const reducePostComments = post => ({
@@ -51,25 +62,27 @@ const reduceLoading = loading => ({
   loading
 })
 
-export const addFirstComment = (comment, username) => ({
+export const addFirstComment = (comment, username, id) => ({
   type: 'ADD_FIRST_LAYER_COMMENT',
   comment: {
     text: comment,
     author: username,
     parent: null,
     comments: [],
-    _createdAt: Date(Date.now())
+    _createdAt: Date(Date.now()),
+    post: id
   }
 })
 
-export const addSecondComment = (comment, index, username) => ({
+export const addSecondComment = (comment, index, username, id) => ({
   type: 'ADD_SECOND_LAYER_COMMENT',
   comment: {
     text: comment,
     author: username,
     parent: null,
     comments: [],
-    _createdAt: Date(Date.now())
+    _createdAt: Date(Date.now()),
+    post: id
   },
   index
 })
