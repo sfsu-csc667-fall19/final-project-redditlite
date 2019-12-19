@@ -41,7 +41,7 @@ export const createNewPost = (
     post: { title, text: description }
   }
 
-  axios.post('/conveyer/post/new', body, { withCredentials: true })
+  axios.post('/api/post/new', body, { withCredentials: true })
     .then(res => {
       dispatch(reduceCreateNewPost(res.data.response.post))
       dispatch(reduceLoading(false))
