@@ -52,6 +52,13 @@ app.all("/api/post/*", (req, res) => {
   });
 });
 
+app.all("/conveyer/post/*", (req, res) => {
+  console.log(req.path)
+  apiProxy.web(req, res, {
+    target: 'http://localhost:5001',
+  });
+});
+
 app.all("*", (req, res) => {
   // front end server / react
   apiProxy.web(req, res, {
