@@ -267,7 +267,7 @@ Intended JSON to include in request:
 } 
 */
 
-app.post('/api/posts/findposts', async (req, res) => {
+app.post('/api/post/findposts', async (req, res) => {
     try{
         if (!req.body.post){
             return res.status(400).send({
@@ -311,7 +311,7 @@ Intended JSON to include in request:
 } 
 */
 
-app.post('/api/posts/findpost', async (req, res) => {
+app.post('/api/post/findpost', async (req, res) => {
     try{
         if (!req.body.post){
             return res.status(400).send({
@@ -347,7 +347,7 @@ Finds one post with the postID included, returns a post object
 Include postID as parameter in get request
 */
 
-app.get('/api/posts/getpost/:id', async (req, res) => {
+app.get('/api/post/getpost/:id', async (req, res) => {
     try{
         if (!req.params.id){
             return res.status(400).send({
